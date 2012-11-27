@@ -630,25 +630,35 @@ public class SimpleHelpTickets extends JavaPlugin {
      }
      
      if (phrase == "UserJoin") {
-       prefix =  ChatColor.GOLD+"* ";
+       prefix =  ChatColor.GOLD+"* " + ChatColor.WHITE;
        output = replaceColorMacros(getOutputConfig().getString("UserJoin"));
        message = prefix+output; 
        return message;             
-     }     
+     }
+     
+     if (phrase == "UserJoinOne") {
+         prefix =  ChatColor.GOLD + "* " + ChatColor.WHITE;
+         output = replaceColorMacros(getOutputConfig().getString("UserJoinOne"));
+         message = prefix+output; 
+         return message;             
+      }
+     
      if (phrase == "UserJoin-TicketReplied") {
-       prefix =  ChatColor.GOLD+"* ";
+       prefix =  ChatColor.GOLD+"* " + ChatColor.WHITE;
        output = replaceColorMacros(getOutputConfig().getString("UserJoin-TicketReplied"));
        message = prefix+output; 
        return message;             
-     }   
+     }
+     
      if (phrase == "HelpMe_Line1") {
-       prefix =  ChatColor.GOLD+"* ";
+       prefix =  ChatColor.GOLD+"* " + ChatColor.WHITE;
        output = replaceColorMacros(getOutputConfig().getString("HelpMe_Line1"));
        message = output; 
        return message;             
      }
+     
      if (phrase == "HelpMe_Line2") {
-       prefix =  ChatColor.GOLD+"* ";
+       prefix =  ChatColor.GOLD+"* " + ChatColor.WHITE;
        output = replaceColorMacros(getOutputConfig().getString("HelpMe_Line2"));
        message = output; 
        return message;             

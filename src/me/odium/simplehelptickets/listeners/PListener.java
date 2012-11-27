@@ -122,7 +122,11 @@ public class PListener implements Listener {
           if (DisplayTicketUser == true) {
 
             if (adminreply.equalsIgnoreCase("NONE")) {
-              player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
+            	if(ticketTotal > 1){
+            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
+            	}else{
+            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotal+""));
+            	}
               rs.close();
               stmt.close();
             } else {
