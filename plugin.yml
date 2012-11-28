@@ -44,3 +44,7 @@ commands:
       description: Purge all expired tickets
       permission: sht.purge
       usage: /purgetickets
+   klart:
+   	  description: Används av lärlingar för att få deras hus i Noobville godkända
+   	  permission: sht.klart
+   	  usage: /klart

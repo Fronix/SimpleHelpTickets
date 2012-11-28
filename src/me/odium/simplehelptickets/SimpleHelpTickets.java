@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import me.odium.simplehelptickets.commands.checkticket;
 import me.odium.simplehelptickets.commands.closeticket;
 import me.odium.simplehelptickets.commands.delticket;
+import me.odium.simplehelptickets.commands.husklart;
 import me.odium.simplehelptickets.commands.purgetickets;
 import me.odium.simplehelptickets.commands.replyticket;
 import me.odium.simplehelptickets.commands.sht;
@@ -129,6 +130,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 		this.getCommand("delticket").setExecutor(new delticket(this));
 		this.getCommand("closeticket").setExecutor(new closeticket(this));
 		this.getCommand("purgetickets").setExecutor(new purgetickets(this));
+		this.getCommand("klart").setExecutor(new husklart(this));
 		// If MySQL
 		if (this.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		  // Get Database Details
