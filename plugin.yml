@@ -1,9 +1,9 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 1.4.3
+version: 1.6
 commands:
    sht:
-      aliases: [helptickets, simplehelptickets]
+      aliases: [helptickets, simplehelptickets, support]
       description: Help Menu
       permission:
       usage: /sht
@@ -17,34 +17,36 @@ commands:
       permission:
       usage: /tickets [ac]  
    closeticket:
+      aliases: [tst√§ng]
       description: close or reopen a help ticket
       permission:
       usage: /closeticket [r] <#>
    replyticket:
-      aliases: [rticket]
+      aliases: [tsvara]
       description: reply to a help ticket
       permission: sht.ticket
       usage: /replyticket <#> <reply>
    taketicket:
+      aliases: [tansvar]
       description: Assign self to a help ticket
       permission: sht.admin
       usage: /taketicket <#>
    checkticket:
-      aliases: [chticket]
+      aliases: [chticket, tkolla]
       description: check your/a help ticket
       permission:
       usage: /checkticket <#>
    delticket:
-      aliases: [dticket]
+      aliases: [dticket, tabort]
       description: Delete a ticket
       permission:
       usage: /delticket <#>
    purgetickets:
-      aliases: [ptickets]
+      aliases: [ptickets, rensatickets]
       description: Purge all expired tickets
       permission: sht.purge
       usage: /purgetickets
    klart:
-   	  description: Anv‰nds av l‰rlingar fˆr att fÂ deras hus i Noobville godk‰nda
-   	  permission: sht.klart
-   	  usage: /klart
+      description: Anv√§nds f√∂r att f√• sitt hus inspekterat
+      permission: sht.klart
+      usage: /klart

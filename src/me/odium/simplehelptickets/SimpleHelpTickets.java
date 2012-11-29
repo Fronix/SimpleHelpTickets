@@ -275,7 +275,6 @@ public class SimpleHelpTickets extends JavaPlugin {
 		return expirations;
 	}
 
-
 	public void displayHelp(CommandSender sender) {
 	  sender.sendMessage(replaceColorMacros(getOutputConfig().getString("HelpPageTitle")));
 	  sender.sendMessage(getMessage("UserCommandsMenu-helptickets"));
@@ -283,6 +282,9 @@ public class SimpleHelpTickets extends JavaPlugin {
 	  sender.sendMessage(getMessage("UserCommandsMenu-Title"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-ticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-tickets"));
+	  if(sender.hasPermission("sht.klart")){
+		  sender.sendMessage(getMessage("UserCommandsMenu-klart"));
+	  }
 	  sender.sendMessage(getMessage("UserCommandsMenu-checkticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-replyticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-closeticket"));
@@ -290,6 +292,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 	  if(sender == null || sender.hasPermission("sht.admin")) {
 	    sender.sendMessage(getMessage("AdminCommandsMenu-Title"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-tickets"));
+	    sender.sendMessage(getMessage("ConsoleCommandsMenu-taketicket"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-taketicket"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-replyticket"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-closeticket"));
@@ -346,6 +349,13 @@ public class SimpleHelpTickets extends JavaPlugin {
       return message;             
     }
 	  
+	  if (phrase == "ConsoleCommandsMenu-taketicket") {
+	      prefix =  replaceColorMacros(getOutputConfig().getString("ConsoleCommandsDescription-taketicket"));
+	      output = replaceColorMacros(getOutputConfig().getString("ConsoleCommandsMenu-taketicket"));
+	      message = prefix+output; 
+	      return message;             
+	}
+	  
 	  if (phrase == "AdminCommandsMenu-tickets") {
       prefix =  replaceColorMacros(getOutputConfig().getString("AdminCommandsDescription-tickets"));
       output = replaceColorMacros(getOutputConfig().getString("AdminCommandsMenu-tickets"));
@@ -386,6 +396,13 @@ public class SimpleHelpTickets extends JavaPlugin {
       message = prefix+output; 
       return message;             
     }
+	  
+	  if (phrase == "UserCommandsMenu-klart") {
+	      prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-klart"));
+	      output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-klart"));
+	      message = prefix+output;
+	      return message;             
+	}
 	  
 	  if (phrase == "UserCommandsMenu-tickets") {
       prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-tickets"));
@@ -596,6 +613,20 @@ public class SimpleHelpTickets extends JavaPlugin {
        message = prefix+output; 
        return message;             
      }
+     
+     if (phrase == "TakeTicketAssignedADMIN") {
+         prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+         output = replaceColorMacros(getOutputConfig().getString("TakeTicketAssignedADMIN"));
+         message = prefix+output; 
+         return message;             
+       }
+     
+     if (phrase == "TakeTicketAssignedADMINTP") {
+         prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+         output = replaceColorMacros(getOutputConfig().getString("TakeTicketAssignedADMINTP"));
+         message = prefix+output; 
+         return message;             
+       }
      
      if (phrase == "TicketOpen") {
        prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));

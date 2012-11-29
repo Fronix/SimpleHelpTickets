@@ -13,6 +13,9 @@
 # sht.ticket - Create help tickets
 # sht.admin - Administrate tickets
 # sht.purge - Access to purge all or some tickets
+# 
+# ConsoleWait is the time that SHT should wait to teleport
+# the assigned admin when using /taketicket via console
 MaxTickets: 3
 TicketExpiration: 7
 NotifyAdminOnTicketClose: true

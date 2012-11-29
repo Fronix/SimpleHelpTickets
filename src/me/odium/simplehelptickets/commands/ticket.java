@@ -188,39 +188,50 @@ public class ticket implements CommandExecutor {
               
               try {
                 con = plugin.mysql.getConnection();
-                stmt = con.createStatement();
-                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
-                // INSERT INTO lyrics1(name, artist) values(?, ?)
-                 
-                statement.setString(1, details);              
-                statement.setString(2, date);             
-                statement.setString(3, owner);
-                statement.setString(4, world);
-                statement.setDouble(5, locX);
-                statement.setDouble(6, locY);
-                statement.setDouble(7, locZ);
-                statement.setDouble(8, locP);
-                statement.setDouble(9, locF);
-                statement.setString(10, adminreply);
-                statement.setString(11, userreply);
-                statement.setString(12, status);
-                statement.setString(13, admin);
-                statement.setString(14, expire);
-
-                statement.executeUpdate();
-                statement.close();
-                // Message player and finish
-                sender.sendMessage(plugin.getMessage("TicketOpen"));
                 
-                // Notify admin of new ticket
-                Player[] players = Bukkit.getOnlinePlayers();
-                for(Player op: players){
-                  if(op.hasPermission("sht.admin") && op != player) {
-                    String pl = "CONSOLE";
-                    op.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", pl));
-                  }
+                Statement stmtCOUNT = con.createStatement();
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"'");
+                rs.next();
+                final int ticketCount = rs.getInt("MaxTickets");
+                int MaxTickets = plugin.getConfig().getInt("MaxTickets");
+                
+                if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin")) {
+                  sender.sendMessage(plugin.getMessage("TicketMax").replace("&arg", MaxTickets+""));
+                  stmtCOUNT.close();
+                  return true;                
                 }
                 
+                stmt = con.createStatement();
+                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+               
+                    statement.setString(1, details);              
+                    statement.setString(2, date);             
+                    statement.setString(3, owner);
+                    statement.setString(4, world);
+                    statement.setDouble(5, locX);
+                    statement.setDouble(6, locY);
+                    statement.setDouble(7, locZ);
+                    statement.setDouble(8, locP);
+                    statement.setDouble(9, locF);
+                    statement.setString(10, adminreply);
+                    statement.setString(11, userreply);
+                    statement.setString(12, status);
+                    statement.setString(13, admin);
+                    statement.setString(14, expire);
+
+                    statement.executeUpdate();
+                    statement.close();
+                    // Message player and finish
+                    sender.sendMessage(plugin.getMessage("TicketOpen"));
+                    
+                    // Notify admin of new ticket
+                    Player[] players = Bukkit.getOnlinePlayers();
+                    for(Player op: players){
+                      if(op.hasPermission("sht.admin") && op != player) {
+                        String pl = "CONSOLE";
+                        op.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", pl));
+                      }
+                    }
 
               } catch (SQLException e) {
                 sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
@@ -229,50 +240,52 @@ public class ticket implements CommandExecutor {
             } else {
             try {        
               con = service.getConnection();
+              
               Statement stmtCOUNT = con.createStatement();
               ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"'");
+              rs.next();
               final int ticketCount = rs.getInt("MaxTickets");
               int MaxTickets = plugin.getConfig().getInt("MaxTickets");
-
+              
               if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin")) {
                 sender.sendMessage(plugin.getMessage("TicketMax").replace("&arg", MaxTickets+""));
-                  return true;                
+                stmtCOUNT.close();
+                return true;                
               }
-
-              stmtCOUNT.close();
-
+              
               stmt = con.createStatement();
-              PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
-              // description, date, owner, world, x, y, z, p, f, reply, status, admin
+              PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+             
+                  statement.setString(1, details);              
+                  statement.setString(2, date);             
+                  statement.setString(3, owner);
+                  statement.setString(4, world);
+                  statement.setDouble(5, locX);
+                  statement.setDouble(6, locY);
+                  statement.setDouble(7, locZ);
+                  statement.setDouble(8, locP);
+                  statement.setDouble(9, locF);
+                  statement.setString(10, adminreply);
+                  statement.setString(11, userreply);
+                  statement.setString(12, status);
+                  statement.setString(13, admin);
+                  statement.setString(14, expire);
 
-              statement.setString(2, details);              
-              statement.setString(3, date);             
-              statement.setString(4, owner);
-              statement.setString(5, world);
-              statement.setDouble(6, locX);
-              statement.setDouble(7, locY);
-              statement.setDouble(8, locZ);
-              statement.setDouble(9, locP);
-              statement.setDouble(10, locF);
-              statement.setString(11, adminreply);
-              statement.setString(12, userreply);
-              statement.setString(13, status);
-              statement.setString(14, admin);
-              statement.setString(15, expire);
+                  statement.executeUpdate();
+                  statement.close();
+                  // Message player and finish
+                  sender.sendMessage(plugin.getMessage("TicketOpen"));
+                  
+                  // Notify admin of new ticket
+                  Player[] players = Bukkit.getOnlinePlayers();
+                  for(Player op: players){
+                    if(op.hasPermission("sht.admin") && op != player) {
+                      String pl = "CONSOLE";
+                      op.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", pl));
+                    }
+                  }
 
-              statement.executeUpdate();
-              statement.close();
-              // Message player and finish
-              sender.sendMessage(plugin.getMessage("TicketOpen"));
-              // Notify admin of new ticket
-              Player[] players = Bukkit.getOnlinePlayers();
-              for(Player op: players){
-                if(op.hasPermission("sht.admin") && op != player) {
-                  op.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", sender.getName()));
-                }
-              }
-
-            } catch(Exception e) {
+            } catch (SQLException e) {
               sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
             }
           }

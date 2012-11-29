@@ -34,13 +34,12 @@ public class taketicket implements CommandExecutor {
       player = (Player) sender;
     }
 
-    if (player == null) {
-      sender.sendMessage(plugin.RED+"This command can only be run by a player, use /checkticket instead.");
-      return true;
-    }
-    if(args.length == 0) {        
-    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-taketicket") + plugin.getOutputConfig().getString("UserCommandsMenu-taketicket")));
+    if(args.length == 0 && player != null) {        
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("AdminCommandsDescription-taketicket") + plugin.getOutputConfig().getString("AdminCommandsMenu-taketicket")));
 		return true;
+    }else if(args.length == 0 && player == null){
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("ConsoleCommandsDescription-taketicket") + plugin.getOutputConfig().getString("ConsoleCommandsMenu-taketicket")));
+    	return true;
     }
     
     for (char c : args[0].toCharArray()) {
@@ -51,131 +50,231 @@ public class taketicket implements CommandExecutor {
     }
 
     int ticketNumber = Integer.parseInt( args[0] );
-
-    try {
-      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-        con = plugin.mysql.getConnection();
-      } else {
-        con = service.getConnection();
-      }
-      stmt = con.createStatement();
-
-      rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
-      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-        rs.next(); //sets pointer to first record in result set
-      }
-      String worldName = null;
-      String date;
-
-      // compile location     
-      World world = Bukkit.getWorld(rs.getString("world"));
-      double x = rs.getDouble("x");        
-      double y = rs.getDouble("y");
-      double z = rs.getDouble("z");
-      float p = (float) rs.getDouble("p");
-      float f = (float) rs.getDouble("f");
-      final Location locc = new Location(world, x, y, z, f, p);
-      // Display Ticket
-      rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
-      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-        rs.next(); //sets pointer to first record in result set
-      }
-
-      String id = rs.getString("id");
-      String owner = rs.getString("owner");
-      if (plugin.getConfig().getBoolean("MultiWorld") == true) {
-        worldName = rs.getString("world");
-      }
-
-      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-        date = new SimpleDateFormat("dd/MMM/yy HH:mm").format(rs.getTimestamp("date"));  
-      } else {
-        date = rs.getString("date");
-      }      
-
-      String Assignedadmin = rs.getString("admin");
-      String adminreply = rs.getString("adminreply");
-      String userreply = rs.getString("userreply");
-      String description = rs.getString("description");
-      String status = rs.getString("status");
-
-      if (status.equalsIgnoreCase("CLOSED")) {        
-        sender.sendMessage(plugin.getMessage("CannotTakeClosedTicket").replace("&arg", id));
-        stmt.close();
-        rs.close();
-        return true;
-      }
-
-      sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+ChatColor.BOLD+"Ticket "+id+ChatColor.RESET+ChatColor.GOLD+" ]");
-      sender.sendMessage(ChatColor.BLUE+" Owner: "+ChatColor.WHITE+owner);
-      sender.sendMessage(ChatColor.BLUE+" Date: "+ChatColor.WHITE+date);
-      if (plugin.getConfig().getBoolean("MultiWorld") == true) {
-        sender.sendMessage(ChatColor.BLUE+" World: "+ChatColor.WHITE+worldName);
-      }
-      if (status.contains("OPEN")) {
-        sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.GREEN+status);
-      } else {
-        sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.RED+status);
-      }
-      sender.sendMessage(ChatColor.BLUE+" Assigned: "+ChatColor.WHITE+Assignedadmin);      
-      sender.sendMessage(ChatColor.BLUE+" Ticket: "+ChatColor.GOLD+description);
-      if (adminreply.equalsIgnoreCase("NONE")) {
-        sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.WHITE+"(none)");
-      } else {
-        sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.YELLOW+adminreply);
-      }
-      if (userreply.equalsIgnoreCase("NONE")) {
-        sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.WHITE+"(none)");
-      } else {
-        sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.YELLOW+userreply);
-      }
-
-      // TELEPORT ADMIN
-      if (!owner.equalsIgnoreCase("CONSOLE")) {
-        player.teleport(locc);
-      }
-      // NOTIFY ADMIN AND USERS
-      String admin = player.getDisplayName();
-      Player target = plugin.getServer().getPlayer(owner);
-      //      String TicketReview = plugin.getConfig().getString("MessageOutput.TicketReviewMsg");
-      // ASSIGN ADMIN
-      stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
-      // NOTIFY -OTHER- ADMINS 
-      Player[] players = Bukkit.getOnlinePlayers();
-      for(Player op: players){
-        if(op.hasPermission("sht.admin") && op != player) {
-          //          op.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GOLD + admin + ChatColor.WHITE + " is reviewing ticket #: "+ChatColor.GOLD+id);
-          op.sendMessage(plugin.getMessage("TakeTicketADMIN").replace("&arg", id).replace("&admin", admin));
-        }
-      }
-      // NOTIFY USER
-      if (target != null && target != player) {
-        //        target.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.replaceColorMacros(TicketReview).replace("%id%", id).replace("%admin%", admin));
-        target.sendMessage(plugin.getMessage("TakeTicketOWNER").replace("&arg", id).replace("&admin", admin));   
-
-        stmt.close();
-        rs.close();
-        return true;
-      }
-
-      stmt.close();
-      rs.close();
-      return true;
-    } catch(Exception e) {
-      if (e.toString().contains("ResultSet closed")) {
-        sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
-        return true;
-      } else if (e.toString().contains("java.lang.ArrayIndexOutOfBoundsException")) {
-        sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
-        return true;
-      } else  if (e.toString().contains("empty result set.")) {
-        sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
-        return true;          
-      } else {
-        sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
-        return true;
-      }
-    }
+    String ConsoleAdmin = args[1];
+    Player AssignToAdmin = Bukkit.getPlayer(ConsoleAdmin);
+    
+    if(player == null){
+    //Console command
+	    try {
+		      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+		        con = plugin.mysql.getConnection();
+		      } else {
+		        con = service.getConnection();
+		      }
+		      stmt = con.createStatement();
+		
+		      rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
+		      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+		        rs.next(); //sets pointer to first record in result set
+		      }
+		      String worldName = null;
+		      String date;
+		
+		      // compile location     
+		      World world = Bukkit.getWorld(rs.getString("world"));
+		      double x = rs.getDouble("x");        
+		      double y = rs.getDouble("y");
+		      double z = rs.getDouble("z");
+		      float p = (float) rs.getDouble("p");
+		      float f = (float) rs.getDouble("f");
+		      final Location locc = new Location(world, x, y, z, f, p);
+		      // Display Ticket
+		      rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
+		      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+		        rs.next(); //sets pointer to first record in result set
+		      }
+		
+		      String id = rs.getString("id");
+		      String owner = rs.getString("owner");
+		      if (plugin.getConfig().getBoolean("MultiWorld") == true) {
+		        worldName = rs.getString("world");
+		      }
+		
+		      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+		        date = new SimpleDateFormat("dd/MMM/yy HH:mm").format(rs.getTimestamp("date"));  
+		      } else {
+		        date = rs.getString("date");
+		      }      
+		
+		      String status = rs.getString("status");
+		
+		      if (status.equalsIgnoreCase("CLOSED")) {        
+		        sender.sendMessage(plugin.getMessage("CannotTakeClosedTicket").replace("&arg", id));
+		        stmt.close();
+		        rs.close();
+		        return true;
+		      }
+		
+		      // TELEPORT THE ASSIGNED ADMIN AND NOTIFY HIM
+		      if (!owner.equalsIgnoreCase("CONSOLE") && AssignToAdmin.isOnline()) {
+		    	  AssignToAdmin.sendMessage(plugin.getMessage("TakeTicketAssignedADMIN").replace("&arg", id));
+		    	  AssignToAdmin.sendMessage(plugin.getMessage("TakeTicketAssignedADMINTP"));
+		    	  AssignToAdmin.teleport(locc);
+		      }
+		      // NOTIFY ADMIN AND USERS
+		      String admin = AssignToAdmin.getDisplayName();
+		      Player target = plugin.getServer().getPlayer(owner);
+		      // ASSIGN ADMIN
+		      stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
+		      // NOTIFY -OTHER- ADMINS 
+		      Player[] players = Bukkit.getOnlinePlayers();
+		      for(Player op: players){
+		        if(op.hasPermission("sht.admin") && op != AssignToAdmin) {
+		          op.sendMessage(plugin.getMessage("TakeTicketADMIN").replace("&arg", id).replace("&admin", admin));
+		        }
+		      }
+		      // NOTIFY USER
+		      if (target != null && target != AssignToAdmin) {
+		        target.sendMessage(plugin.getMessage("TakeTicketOWNER").replace("&arg", id).replace("&admin", admin));   
+		
+		        stmt.close();
+		        rs.close();
+		        return true;
+		      }
+		
+		      stmt.close();
+		      rs.close();
+		      return true;
+		    } catch(Exception e) {
+		      if (e.toString().contains("ResultSet closed")) {
+		    	AssignToAdmin.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+		        return true;
+		      } else if (e.toString().contains("java.lang.ArrayIndexOutOfBoundsException")) {
+		    	  AssignToAdmin.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+		        return true;
+		      } else  if (e.toString().contains("empty result set.")) {
+		    	  AssignToAdmin.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+		        return true;          
+		      } else {
+		    	  AssignToAdmin.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
+		        return true;
+		      }
+		    }
+    //Console command end
+    }else{
+    //Player command start
+	    try {
+	      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+	        con = plugin.mysql.getConnection();
+	      } else {
+	        con = service.getConnection();
+	      }
+	      stmt = con.createStatement();
+	
+	      rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
+	      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+	        rs.next(); //sets pointer to first record in result set
+	      }
+	      String worldName = null;
+	      String date;
+	
+	      // compile location     
+	      World world = Bukkit.getWorld(rs.getString("world"));
+	      double x = rs.getDouble("x");        
+	      double y = rs.getDouble("y");
+	      double z = rs.getDouble("z");
+	      float p = (float) rs.getDouble("p");
+	      float f = (float) rs.getDouble("f");
+	      final Location locc = new Location(world, x, y, z, f, p);
+	      // Display Ticket
+	      rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
+	      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+	        rs.next(); //sets pointer to first record in result set
+	      }
+	
+	      String id = rs.getString("id");
+	      String owner = rs.getString("owner");
+	      if (plugin.getConfig().getBoolean("MultiWorld") == true) {
+	        worldName = rs.getString("world");
+	      }
+	
+	      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+	        date = new SimpleDateFormat("dd/MMM/yy HH:mm").format(rs.getTimestamp("date"));  
+	      } else {
+	        date = rs.getString("date");
+	      }      
+	
+	      String Assignedadmin = rs.getString("admin");
+	      String adminreply = rs.getString("adminreply");
+	      String userreply = rs.getString("userreply");
+	      String description = rs.getString("description");
+	      String status = rs.getString("status");
+	
+	      if (status.equalsIgnoreCase("CLOSED")) {        
+	        sender.sendMessage(plugin.getMessage("CannotTakeClosedTicket").replace("&arg", id));
+	        stmt.close();
+	        rs.close();
+	        return true;
+	      }
+	
+	      sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+ChatColor.BOLD+"Ticket "+id+ChatColor.RESET+ChatColor.GOLD+" ]");
+	      sender.sendMessage(ChatColor.BLUE+" Owner: "+ChatColor.WHITE+owner);
+	      sender.sendMessage(ChatColor.BLUE+" Date: "+ChatColor.WHITE+date);
+	      if (plugin.getConfig().getBoolean("MultiWorld") == true) {
+	        sender.sendMessage(ChatColor.BLUE+" World: "+ChatColor.WHITE+worldName);
+	      }
+	      if (status.contains("OPEN")) {
+	        sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.GREEN+status);
+	      } else {
+	        sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.RED+status);
+	      }
+	      sender.sendMessage(ChatColor.BLUE+" Assigned: "+ChatColor.WHITE+Assignedadmin);      
+	      sender.sendMessage(ChatColor.BLUE+" Ticket: "+ChatColor.GOLD+description);
+	      if (adminreply.equalsIgnoreCase("NONE")) {
+	        sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.WHITE+"(none)");
+	      } else {
+	        sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.YELLOW+adminreply);
+	      }
+	      if (userreply.equalsIgnoreCase("NONE")) {
+	        sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.WHITE+"(none)");
+	      } else {
+	        sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.YELLOW+userreply);
+	      }
+	
+	      // TELEPORT ADMIN
+	      if (!owner.equalsIgnoreCase("CONSOLE")) {
+	        player.teleport(locc);
+	      }
+	      // NOTIFY ADMIN AND USERS
+	      String admin = player.getDisplayName();
+	      Player target = plugin.getServer().getPlayer(owner);
+	      // ASSIGN ADMIN
+	      stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
+	      // NOTIFY -OTHER- ADMINS 
+	      Player[] players = Bukkit.getOnlinePlayers();
+	      for(Player op: players){
+	        if(op.hasPermission("sht.admin") && op != player) {
+	          op.sendMessage(plugin.getMessage("TakeTicketADMIN").replace("&arg", id).replace("&admin", admin));
+	        }
+	      }
+	      // NOTIFY USER
+	      if (target != null && target != player) {
+	        target.sendMessage(plugin.getMessage("TakeTicketOWNER").replace("&arg", id).replace("&admin", admin));   
+	
+	        stmt.close();
+	        rs.close();
+	        return true;
+	      }
+	
+	      stmt.close();
+	      rs.close();
+	      return true;
+	    } catch(Exception e) {
+	      if (e.toString().contains("ResultSet closed")) {
+	        sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+	        return true;
+	      } else if (e.toString().contains("java.lang.ArrayIndexOutOfBoundsException")) {
+	        sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+	        return true;
+	      } else  if (e.toString().contains("empty result set.")) {
+	        sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+	        return true;          
+	      } else {
+	        sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
+	        return true;
+	      }
+	    }
+    }//Player command end
 
 
   }
