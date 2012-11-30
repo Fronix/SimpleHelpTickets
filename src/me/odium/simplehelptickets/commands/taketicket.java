@@ -69,7 +69,7 @@ public class taketicket implements CommandExecutor {
 		      }
 		      String worldName = null;
 		      String date;
-		
+		      
 		      // compile location     
 		      World world = Bukkit.getWorld(rs.getString("world"));
 		      double x = rs.getDouble("x");        

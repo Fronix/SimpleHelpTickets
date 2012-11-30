@@ -17,6 +17,7 @@
 # ConsoleWait is the time that SHT should wait to teleport
 # the assigned admin when using /taketicket via console
 MaxTickets: 3
+MaxHouseInspect: 1
 TicketExpiration: 7
 NotifyAdminOnTicketClose: true
 MultiWorld: false

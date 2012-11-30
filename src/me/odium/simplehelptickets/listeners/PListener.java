@@ -2,9 +2,9 @@ package me.odium.simplehelptickets.listeners;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
+//import java.util.Locale;
 
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
@@ -78,7 +78,7 @@ public class PListener implements Listener {
         }
 
         stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND status='OPEN'" );
                 if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
                   rs.next(); //sets pointer to first record in result set
                 }

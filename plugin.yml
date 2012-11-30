@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 1.6
+version: 1.7
 commands:
    sht:
       aliases: [helptickets, simplehelptickets, support]
@@ -32,7 +32,7 @@ commands:
       permission: sht.admin
       usage: /taketicket <#>
    checkticket:
-      aliases: [chticket, tkolla]
+      aliases: [chticket, tkolla, tinfo]
       description: check your/a help ticket
       permission:
       usage: /checkticket <#>

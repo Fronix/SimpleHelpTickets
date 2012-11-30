@@ -78,12 +78,12 @@ public class tickets implements CommandExecutor {
           // DISPLAY ALL TICKETS
           rs = stmt.executeQuery("SELECT * FROM SHT_Tickets ORDER BY id ASC");      
           int iterations = 0;
-          sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"All Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
+          sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Alla Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
           while(rs.next()){
             iterations++;
             String desc = rs.getString("description");
-            if (desc.length() > 42) {
-              desc = desc.substring(0, 42)+"...";
+            if (desc.length() > 18) {
+              desc = desc.substring(0, 18)+"...";
             }
             if (!rs.getString("adminreply").equalsIgnoreCase("NONE")) {              
               if (rs.getString("status").equalsIgnoreCase("OPEN")) {
@@ -119,12 +119,12 @@ public class tickets implements CommandExecutor {
         } else if (args.length == 1 && args[0].equalsIgnoreCase("-c")) {     
           rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE status='"+"CLOSED"+"' ORDER BY id ASC");          
           int iterations = 0;
-          sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Closed Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
+          sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Stängda Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
           while(rs.next()){
             iterations++;
             String desc = rs.getString("description");
-            if (desc.length() > 42) {
-              desc = desc.substring(0, 42)+"...";
+            if (desc.length() > 18) {
+              desc = desc.substring(0, 18)+"...";
             }
             if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) {
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
@@ -164,30 +164,36 @@ public class tickets implements CommandExecutor {
         stmt = con.createStatement();
         rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"' ORDER BY id ASC");   
         int iterations = 0;
-        sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Your Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
+        sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Dina tickets"+ChatColor.RESET+plugin.GOLD+" ]");
         while(rs.next()){
           iterations++;
           String desc = rs.getString("description");
-          if (desc.length() > 42) {
-            desc = desc.substring(0, 42)+"...";
+          if (desc.length() > 18) {
+            desc = desc.substring(0, 18)+"...";
           }
           if (!rs.getString("adminreply").equalsIgnoreCase("NONE")) {              
             if (rs.getString("status").equalsIgnoreCase("OPEN")) {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+            	sender.sendMessage(plugin.getMessage("ClosedTickets"));
+            	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
             } else {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+            	sender.sendMessage(plugin.getMessage("OpenTickets"));
+                sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
             }
           } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
             if (rs.getString("status").equalsIgnoreCase("OPEN")) {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.GOLD+desc);
+            	sender.sendMessage(plugin.getMessage("ClosedTickets"));
+            	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
             } else {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
+            	sender.sendMessage(plugin.getMessage("OpenTickets"));
+            	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.GOLD+desc);
             }
           } else {
             if (rs.getString("status").equalsIgnoreCase("OPEN")) {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
+            	sender.sendMessage(plugin.getMessage("ClosedTickets"));
+            	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
             } else {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
+              sender.sendMessage(plugin.getMessage("OpenTickets"));
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
             }
           }
         }

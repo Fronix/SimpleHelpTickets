@@ -565,6 +565,18 @@ public class SimpleHelpTickets extends JavaPlugin {
        return message;             
      }
      
+     if (phrase == "ClosedTickets") {
+         output = replaceColorMacros(getOutputConfig().getString("ClosedTickets"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "OpenTickets") {
+         output = replaceColorMacros(getOutputConfig().getString("OpenTickets"));
+         message = output; 
+         return message;             
+       }
+     
      if (phrase == "AllTicketsPurged") {
        prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
        output = replaceColorMacros(getOutputConfig().getString("AllTicketsPurged"));
@@ -697,9 +709,62 @@ public class SimpleHelpTickets extends JavaPlugin {
        return message;             
      }
      
+     if (phrase == "HouseNewInspect") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseNewInspect"));
+         message = output; 
+         return message;             
+       }
+       
+     if (phrase == "HouseNew_Line1") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseNew_Line1"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "HouseNew_Line2") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseNew_Line2"));
+         message = output; 
+         return message;             
+       }
+       
+     if (phrase == "HouseInspection") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseInspection"));
+         message = output; 
+         return message;             
+       }
+       
+     if (phrase == "HousePendin") {
+         output = replaceColorMacros(getOutputConfig().getString("HousePendin"));
+         message = output; 
+         return message;             
+       }
+       
+     if (phrase == "HouseAccept") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseAccept"));
+         message = output; 
+         return message;             
+       }
+       
+     if (phrase == "HouseDeny") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseDeny"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "HouseMaxInspect") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseMaxInspect"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "ChunkNotOwn") {
+         output = replaceColorMacros(getOutputConfig().getString("ChunkNotOwn"));
+         message = output; 
+         return message;             
+       }
+       
+     
      return "Error";
 	}
-
-
 
 }
