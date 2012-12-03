@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 import me.odium.simplehelptickets.commands.checkticket;
 import me.odium.simplehelptickets.commands.closeticket;
 import me.odium.simplehelptickets.commands.delticket;
+import me.odium.simplehelptickets.commands.house;
+import me.odium.simplehelptickets.commands.housestatus;
 import me.odium.simplehelptickets.commands.husklart;
 import me.odium.simplehelptickets.commands.purgetickets;
 import me.odium.simplehelptickets.commands.replyticket;
@@ -130,7 +132,9 @@ public class SimpleHelpTickets extends JavaPlugin {
 		this.getCommand("delticket").setExecutor(new delticket(this));
 		this.getCommand("closeticket").setExecutor(new closeticket(this));
 		this.getCommand("purgetickets").setExecutor(new purgetickets(this));
+		this.getCommand("house").setExecutor(new house(this));
 		this.getCommand("klart").setExecutor(new husklart(this));
+		this.getCommand("housestatus").setExecutor(new housestatus(this));
 		// If MySQL
 		if (this.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		  // Get Database Details
@@ -276,7 +280,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 	}
 
 	public void displayHelp(CommandSender sender) {
-	  sender.sendMessage(replaceColorMacros(getOutputConfig().getString("HelpPageTitle")));
+	  sender.sendMessage(getMessage("HelpPageTitle"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-helptickets"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-helpme"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-Title"));
@@ -301,11 +305,24 @@ public class SimpleHelpTickets extends JavaPlugin {
 	    sender.sendMessage(getMessage("AdminCommandsMenu-reload"));
 	  }
 	}
+	
+	public void displayHouseHelp(CommandSender sender){
+		sender.sendMessage(getMessage("HelpPageTitle"));
+		sender.sendMessage(getMessage("UserHusCommandsMenu-house"));
+		sender.sendMessage(getMessage("UserHusCommandsMenu-klart"));
+		sender.sendMessage(getMessage("UserHusCommandsMenu-housestatus"));
+	}
 
 	public String getMessage(String phrase) {
 	  String prefix;
 	  String output;
-	  String message; 
+	  String message;
+	  
+	  if (phrase == "HelpPageTitle") {
+	      output = replaceColorMacros(getOutputConfig().getString("HelpPageTitle"));
+	      message = output; 
+	      return message;             
+	    }
 	  
 	  if (phrase == "AdminCommandsMenu-reload") {
       prefix =  replaceColorMacros(getOutputConfig().getString("AdminCommandsDescription-reload"));
@@ -424,20 +441,43 @@ public class SimpleHelpTickets extends JavaPlugin {
       return message;             
     }
 	  
-	   if (phrase == "UserCommandsMenu-helpme") {
-	      prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-helpme")) + ChatColor.WHITE;
-	      output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-helpme"));
-	      message = prefix+output; 
-	      return message;             
-	    }
-	  
-	  if (phrase == "UserCommandsMenu-helptickets") {
-      prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-helptickets")) + ChatColor.WHITE;
-      output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-helptickets"));
+   if (phrase == "UserCommandsMenu-helpme") {
+      prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-helpme")) + ChatColor.WHITE;
+      output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-helpme"));
       message = prefix+output; 
       return message;             
-    }	  
+    }
+	  
+	  if (phrase == "UserCommandsMenu-helptickets") {
+	  prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-helptickets")) + ChatColor.WHITE;
+	  output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-helptickets"));
+	  message = prefix+output; 
+	  return message;             
+	}	  
 // END MENU
+	  
+// START HOUSE MENU
+	   if (phrase == "UserHusCommandsMenu-house") {
+		      prefix =  replaceColorMacros(getOutputConfig().getString("UserHusCommandsDescription-house"));
+		      output = replaceColorMacros(getOutputConfig().getString("UserHusCommandsMenu-house"));
+		      message = prefix+output; 
+		      return message;             
+		    }
+	   
+	   if (phrase == "UserHusCommandsMenu-klart") {
+		      prefix =  replaceColorMacros(getOutputConfig().getString("UserHusCommandsDescription-klart"));
+		      output = replaceColorMacros(getOutputConfig().getString("UserHusCommandsMenu-klart"));
+		      message = prefix+output; 
+		      return message;             
+		    }
+	   
+	   if (phrase == "UserHusCommandsMenu-housestatus") {
+		      prefix =  replaceColorMacros(getOutputConfig().getString("UserHusCommandsDescription-housestatus"));
+		      output = replaceColorMacros(getOutputConfig().getString("UserHusCommandsMenu-housestatus"));
+		      message = prefix+output; 
+		      return message;             
+		    }
+// END HOUSE MENU
 	  
 	  if (phrase == "InvalidTicketNumber") {
 	    prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
@@ -733,20 +773,20 @@ public class SimpleHelpTickets extends JavaPlugin {
          return message;             
        }
        
-     if (phrase == "HousePendin") {
-         output = replaceColorMacros(getOutputConfig().getString("HousePendin"));
+     if (phrase == "HousePending") {
+         output = replaceColorMacros(getOutputConfig().getString("HousePending"));
          message = output; 
          return message;             
        }
        
-     if (phrase == "HouseAccept") {
-         output = replaceColorMacros(getOutputConfig().getString("HouseAccept"));
+     if (phrase == "HouseAccepted") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseAccepted"));
          message = output; 
          return message;             
        }
        
-     if (phrase == "HouseDeny") {
-         output = replaceColorMacros(getOutputConfig().getString("HouseDeny"));
+     if (phrase == "HouseDenied") {
+         output = replaceColorMacros(getOutputConfig().getString("HouseDenied"));
          message = output; 
          return message;             
        }
@@ -762,6 +802,144 @@ public class SimpleHelpTickets extends JavaPlugin {
          message = output; 
          return message;             
        }
+     
+     if (phrase == "CheckListOwner") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListOwner"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListDate") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListDate"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListWorld") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListWorld"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListStatus") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListStatus"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListAssigned") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListAssigned"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListDescription") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListDescription"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListAdminReply") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListAdminReply"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListUserReply") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListUserReply"));
+         message = output; 
+         return message;             
+       }
+     
+     if (phrase == "CheckListExpiration") {
+         output = replaceColorMacros(getOutputConfig().getString("CheckListExpiration"));
+         message = output; 
+         return message;             
+       }
+       
+   if (phrase == "CheckListNoReply") {
+       output = replaceColorMacros(getOutputConfig().getString("CheckListNoReply"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "CheckListNoAdminAssigned") {
+       output = replaceColorMacros(getOutputConfig().getString("CheckListNoAdminAssigned"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListOwner") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListOwner"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListDate") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListDate"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListWorld") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListWorld"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListStatus") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListStatus"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListAssigned") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListAssigned"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListDescription") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListDescription"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListAdminReply") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListAdminReply"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListUserReply") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListUserReply"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HouseCheckListExpiration") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseCheckListExpiration"));
+       message = output; 
+       return message;             
+     }
+     
+ if (phrase == "HouseCheckListNoReply") {
+     output = replaceColorMacros(getOutputConfig().getString("HouseCheckListNoReply"));
+     message = output; 
+     return message;             
+   }
+   
+   if (phrase == "PrefixWithID") {
+       output = replaceColorMacros(getOutputConfig().getString("PrefixWithID"));
+       message = output; 
+       return message;             
+     }
+   
+   if (phrase == "HousePrefixWithID") {
+       output = replaceColorMacros(getOutputConfig().getString("HousePrefixWithID"));
+       message = output; 
+       return message;             
+     }
        
      
      return "Error";

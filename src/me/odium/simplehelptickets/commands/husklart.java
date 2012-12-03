@@ -44,7 +44,7 @@ public class husklart implements CommandExecutor {
 	      player = (Player) sender;
 	    }
       	
-	    if(player != null && player.hasPermission("sht.klart")) {
+	    if(player != null && player.hasPermission("sht.house.klart")) {
 
             Connection con;
             @SuppressWarnings("unused")

@@ -8,7 +8,6 @@ import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -206,30 +205,30 @@ public class taketicket implements CommandExecutor {
 	        rs.close();
 	        return true;
 	      }
-	
-	      sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+ChatColor.BOLD+"Ticket "+id+ChatColor.RESET+ChatColor.GOLD+" ]");
-	      sender.sendMessage(ChatColor.BLUE+" Owner: "+ChatColor.WHITE+owner);
-	      sender.sendMessage(ChatColor.BLUE+" Date: "+ChatColor.WHITE+date);
-	      if (plugin.getConfig().getBoolean("MultiWorld") == true) {
-	        sender.sendMessage(ChatColor.BLUE+" World: "+ChatColor.WHITE+worldName);
-	      }
-	      if (status.contains("OPEN")) {
-	        sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.GREEN+status);
-	      } else {
-	        sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.RED+status);
-	      }
-	      sender.sendMessage(ChatColor.BLUE+" Assigned: "+ChatColor.WHITE+Assignedadmin);      
-	      sender.sendMessage(ChatColor.BLUE+" Ticket: "+ChatColor.GOLD+description);
-	      if (adminreply.equalsIgnoreCase("NONE")) {
-	        sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.WHITE+"(none)");
-	      } else {
-	        sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.YELLOW+adminreply);
-	      }
-	      if (userreply.equalsIgnoreCase("NONE")) {
-	        sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.WHITE+"(none)");
-	      } else {
-	        sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.YELLOW+userreply);
-	      }
+	      
+          sender.sendMessage(plugin.getMessage("PrefixWithID").replace("&arg", id));
+          sender.sendMessage(plugin.getMessage("CheckListOwner").replace("&arg", owner)); 
+          sender.sendMessage(plugin.getMessage("CheckListDate").replace("&arg", date)); 
+          if (plugin.getConfig().getBoolean("MultiWorld") == true) {
+        	  sender.sendMessage(plugin.getMessage("CheckListWorld").replace("&arg", worldName)); 
+          }
+          if (status.contains("OPEN")) {
+        	  sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", status));
+          } else {
+        	  sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", status));
+          }
+          sender.sendMessage(plugin.getMessage("CheckListAssigned").replace("&arg", Assignedadmin));
+          sender.sendMessage(plugin.getMessage("CheckListDescription").replace("&arg", description));
+          if (adminreply.equalsIgnoreCase("NONE")) {
+        	  sender.sendMessage(plugin.getMessage("CheckListAdminReply").replace("&arg", plugin.getMessage("CheckListNoReply")));
+          } else {
+        	  sender.sendMessage(plugin.getMessage("CheckListAdminReply").replace("&arg", adminreply));
+          }
+          if (userreply.equalsIgnoreCase("NONE")) {
+        	  sender.sendMessage(plugin.getMessage("CheckListUserReply").replace("&arg", plugin.getMessage("CheckListNoReply")));
+          } else {
+        	  sender.sendMessage(plugin.getMessage("CheckListUserReply").replace("&arg", userreply));
+          }
 	
 	      // TELEPORT ADMIN
 	      if (!owner.equalsIgnoreCase("CONSOLE")) {

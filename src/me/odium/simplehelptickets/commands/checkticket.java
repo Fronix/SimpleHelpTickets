@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -85,39 +84,43 @@ public class checkticket implements CommandExecutor {
           String status = rs.getString("status");
 
 
-          sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+ChatColor.BOLD+"Ticket "+id+ChatColor.RESET+ChatColor.GOLD+" ]");
-          sender.sendMessage(ChatColor.BLUE+" Owner: "+ChatColor.WHITE+owner);
-          sender.sendMessage(ChatColor.BLUE+" Date: "+ChatColor.WHITE+date);
+          sender.sendMessage(plugin.getMessage("PrefixWithID").replace("&arg", id));
+          sender.sendMessage(plugin.getMessage("CheckListOwner").replace("&arg", owner)); 
+          sender.sendMessage(plugin.getMessage("CheckListDate").replace("&arg", date)); 
           if (plugin.getConfig().getBoolean("MultiWorld") == true) {
-            sender.sendMessage(ChatColor.BLUE+" World: "+ChatColor.WHITE+world);
+        	  sender.sendMessage(plugin.getMessage("CheckListWorld").replace("&arg", world)); 
           }
           if (status.contains("OPEN")) {
-            sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.GREEN+status);
+        	  sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", status));
           } else {
-            sender.sendMessage(ChatColor.BLUE+" Status: "+ChatColor.RED+status);
+        	  sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", status));
           }
-          sender.sendMessage(ChatColor.BLUE+" Assigned: "+ChatColor.WHITE+admin);      
-          sender.sendMessage(ChatColor.BLUE+" Ticket: "+ChatColor.GOLD+description);
+          if (admin.equalsIgnoreCase("NONE")){
+        	  sender.sendMessage(plugin.getMessage("HouseCheckListAssigned").replace("&arg", plugin.getMessage("CheckListNoAdminAssigned")));
+          }else{
+        	  sender.sendMessage(plugin.getMessage("HouseCheckListAssigned").replace("&arg", admin));
+          }
+          sender.sendMessage(plugin.getMessage("CheckListDescription").replace("&arg", description));
           if (adminreply.equalsIgnoreCase("NONE")) {
-            sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.WHITE+"(none)");
+        	  sender.sendMessage(plugin.getMessage("CheckListAdminReply").replace("&arg", plugin.getMessage("CheckListNoReply")));
           } else {
-            sender.sendMessage(ChatColor.BLUE+" Admin Reply: "+ChatColor.YELLOW+adminreply);
+        	  sender.sendMessage(plugin.getMessage("CheckListAdminReply").replace("&arg", adminreply));
           }
           if (userreply.equalsIgnoreCase("NONE")) {
-            sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.WHITE+"(none)");
+        	  sender.sendMessage(plugin.getMessage("CheckListUserReply").replace("&arg", plugin.getMessage("CheckListNoReply")));
           } else {
-            sender.sendMessage(ChatColor.BLUE+" User Reply: "+ChatColor.YELLOW+userreply);
+        	  sender.sendMessage(plugin.getMessage("CheckListUserReply").replace("&arg", userreply));
           }
           // IF AN EXPIRATION HAS BEEN APPLIED 
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             if (rs.getTimestamp("expiration") != null) {
               expiration = new SimpleDateFormat("dd/MMM/yy HH:mm").format(rs.getTimestamp("expiration"));
-              sender.sendMessage(ChatColor.BLUE+" Expiration: "+ChatColor.WHITE+expiration);
+              sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", expiration));
             }
           } else {
             if (rs.getTimestamp("expiration") != null) {
             expiration = rs.getString("expiration");
-            sender.sendMessage(ChatColor.BLUE+" Expiration: "+ChatColor.WHITE+expiration);
+            sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", expiration));
             }
 
 
@@ -137,11 +140,9 @@ public class checkticket implements CommandExecutor {
 
       } catch (SQLException e) {
         if (e.toString().contains("empty result set.")) {
-          //            sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+ChatColor.GOLD+args[0]+ChatColor.RED+" does not exist");
           sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
           return true;          
         } else {
-          //            sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Error: "+plugin.WHITE+e);
           sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
           return true;
         }

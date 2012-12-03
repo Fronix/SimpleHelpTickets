@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 1.7
+version: 1.8
 commands:
    sht:
       aliases: [helptickets, simplehelptickets, support]
@@ -46,7 +46,17 @@ commands:
       description: Purge all expired tickets
       permission: sht.purge
       usage: /purgetickets
+   house:
+      aliases: [hus, noobvillehus]
+      description: Shows house commands menu
+      permission: sht.house
+      usage: /klart
    klart:
       description: Används för att få sitt hus inspekterat
-      permission: sht.klart
+      permission: sht.house.klart
       usage: /klart
+   housestatus:
+      aliases: [hstatus, husstatus]
+      description: Hus status
+      permission: sht.house.status
+      usage: /housestatus
