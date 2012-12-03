@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+import me.odium.simplehelptickets.commands.ahus;
 import me.odium.simplehelptickets.commands.checkticket;
 import me.odium.simplehelptickets.commands.closeticket;
 import me.odium.simplehelptickets.commands.delticket;
@@ -135,6 +136,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 		this.getCommand("house").setExecutor(new house(this));
 		this.getCommand("klart").setExecutor(new husklart(this));
 		this.getCommand("housestatus").setExecutor(new housestatus(this));
+		this.getCommand("ahus").setExecutor(new ahus(this));
 		// If MySQL
 		if (this.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		  // Get Database Details
