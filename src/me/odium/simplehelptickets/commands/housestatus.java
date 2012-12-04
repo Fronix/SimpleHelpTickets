@@ -100,7 +100,8 @@ public class housestatus implements CommandExecutor {
 	          } else {
 	        	  sender.sendMessage(plugin.getMessage("HouseCheckListUserReply").replace("&arg", userreply));
 	          }
-	          // IF AN EXPIRATION HAS BEEN APPLIED 
+	          /* IF AN EXPIRATION HAS BEEN APPLIED 
+	           * Not sure if we should use this for house tickets
 	          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 	            if (rs.getTimestamp("expiration") != null) {
 	              expiration = new SimpleDateFormat("dd/MMM/yy HH:mm").format(rs.getTimestamp("expiration"));
@@ -111,7 +112,7 @@ public class housestatus implements CommandExecutor {
 	            expiration = rs.getString("expiration");
 	            sender.sendMessage(plugin.getMessage("HouseCheckListStatus").replace("&arg", expiration));
 	            }
-	          }
+	          } */
 	          rs.close();          
 	        }
 

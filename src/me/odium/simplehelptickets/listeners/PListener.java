@@ -57,12 +57,10 @@ public class PListener implements Listener {
             stmt.close();
           } else if(ticketTotal > 0) {
             player.sendMessage(plugin.getMessage("AdminJoin").replace("&arg", ticketTotal+""));
-            //            player.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GOLD+"* "+ChatColor.WHITE + "There are currently " + ChatColor.GOLD + ticketTotal + ChatColor.WHITE+ " open Help Tickets");
             rs.close();
             stmt.close();
           }
         } catch(Exception e) {
-          //          plugin.log.info(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Error: "+plugin.WHITE+e);
           plugin.log.info(plugin.getMessage("Error").replace("&arg", e.toString()));
         }
 
