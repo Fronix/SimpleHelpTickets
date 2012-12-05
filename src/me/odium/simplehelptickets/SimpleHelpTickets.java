@@ -313,6 +313,14 @@ public class SimpleHelpTickets extends JavaPlugin {
 		sender.sendMessage(getMessage("UserHusCommandsMenu-house"));
 		sender.sendMessage(getMessage("UserHusCommandsMenu-klart"));
 		sender.sendMessage(getMessage("UserHusCommandsMenu-housestatus"));
+		if(sender != null || sender.hasPermission("sht.admin")) {
+			sender.sendMessage(getMessage("AdminCommandsMenu-Title"));
+			sender.sendMessage(getMessage("UserHusCommandsMenu-ahouseaccept"));
+			sender.sendMessage(getMessage("UserHusCommandsMenu-ahousedeny"));
+		}
+		if(sender != null || sender.hasPermission("sht.house.delete")){
+			sender.sendMessage(getMessage("UserHusCommandsMenu-ahousedelete"));
+		}
 	}
 
 	public String getMessage(String phrase) {
@@ -479,6 +487,27 @@ public class SimpleHelpTickets extends JavaPlugin {
 		      message = prefix+output; 
 		      return message;             
 		    }
+	   
+	   if (phrase == "UserHusCommandsMenu-ahouseaccept") {
+		      prefix =  replaceColorMacros(getOutputConfig().getString("UserHusCommandsDescription-ahouseaccept"));
+		      output = replaceColorMacros(getOutputConfig().getString("UserHusCommandsMenu-ahouseaccept"));
+		      message = prefix+output; 
+		      return message;             
+	     }
+	   
+	   if (phrase == "UserHusCommandsMenu-ahousedeny") {
+		      prefix =  replaceColorMacros(getOutputConfig().getString("UserHusCommandsDescription-ahousedeny"));
+		      output = replaceColorMacros(getOutputConfig().getString("UserHusCommandsMenu-ahousedeny"));
+		      message = prefix+output; 
+		      return message;              
+	     }
+	   
+	   if (phrase == "UserHusCommandsMenu-ahousedelete") {
+		      prefix =  replaceColorMacros(getOutputConfig().getString("UserHusCommandsDescription-ahousedelete"));
+		      output = replaceColorMacros(getOutputConfig().getString("UserHusCommandsMenu-ahousedelete"));
+		      message = prefix+output; 
+		      return message;              
+	     }
 // END HOUSE MENU
 	  
 	  if (phrase == "InvalidTicketNumber") {
@@ -942,8 +971,19 @@ public class SimpleHelpTickets extends JavaPlugin {
        message = output; 
        return message;             
      }
+   
+   if (phrase == "HouseAcceptedOWNER") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseAcceptedOWNER"));
+       message = output; 
+       return message;             
+     }
        
-     
+   if (phrase == "HouseDeniedOWNER") {
+       output = replaceColorMacros(getOutputConfig().getString("HouseDeniedOWNER"));
+       message = output; 
+       return message;             
+     }
+   
      return "Error";
 	}
 

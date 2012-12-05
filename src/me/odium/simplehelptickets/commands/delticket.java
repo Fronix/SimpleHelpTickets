@@ -108,30 +108,14 @@ public class delticket implements CommandExecutor {
           sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+rs.getString("id")+" is not your ticket to delete.");
           return true;
         } else {
-//          try {
-//            con = service.getConnection();
-//            stmt = con.createStatement();
 
             stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+args[0]+"'");
             sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.WHITE+"Ticket "+ChatColor.GOLD+args[0]+ChatColor.WHITE+" Deleted");
             rs.close();
             stmt.close();            
             return true;
-//          } catch(Exception e) {
-//            if (e.toString().contains("ResultSet closed")) {
-//              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+args[0]+" does not exist!");
-//              return true;
-//            } else {
-//              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Error: "+plugin.WHITE+e);
-//              return true;
-//            }   
-//          }
         }
       } catch(Exception e) {
-//        if (e.toString().contains("ResultSet closed")) {
-//          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+args[0]+" does not exist!");
-//          return true;
-//        } else {
         sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
           return true;
         }     

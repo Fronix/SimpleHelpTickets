@@ -60,3 +60,8 @@ commands:
       description: Hus status
       permission: sht.house.status
       usage: /housestatus
+   ahouse:
+      aliases: [ahus, adminhus]
+      description: Administrate house tickets
+      permission: sht.admin
+      usage: /ahouse <accept,deny>
