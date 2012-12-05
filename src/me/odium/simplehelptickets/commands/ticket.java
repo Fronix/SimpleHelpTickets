@@ -201,6 +201,11 @@ public class ticket implements CommandExecutor {
                   return true;                
                 }
                 
+                if(details.length() <= 10){
+                    sender.sendMessage(plugin.getMessage("TicketNotEnough"));
+                    return true;    
+                }
+                
                 stmt = con.createStatement();
                 PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
                
@@ -228,7 +233,7 @@ public class ticket implements CommandExecutor {
                     Player[] players = Bukkit.getOnlinePlayers();
                     for(Player op: players){
                       if(op.hasPermission("sht.admin") && op != player) {
-                        String pl = "CONSOLE";
+                        String pl = owner;
                         op.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", pl));
                       }
                     }

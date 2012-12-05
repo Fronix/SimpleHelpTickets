@@ -545,6 +545,20 @@ public class SimpleHelpTickets extends JavaPlugin {
       return message;             
     }
 	  
+	  if (phrase == "NotYourTicketToDelete") {
+		    prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+		    output = replaceColorMacros(getOutputConfig().getString("NotYourTicketToDelete"));
+		    message = prefix+output; 
+		    return message;             
+		  }
+	  
+	  if (phrase == "TicketDeleted") {
+		    prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+		    output = replaceColorMacros(getOutputConfig().getString("TicketDeleted"));
+		    message = prefix+output; 
+		    return message;             
+		  }
+	  
 	  if (phrase == "NewConfig") {
 	    prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
 	    output = replaceColorMacros(getOutputConfig().getString("NewConfig"));
@@ -731,6 +745,13 @@ public class SimpleHelpTickets extends JavaPlugin {
        message = prefix+output; 
        return message;             
      }
+     
+     if (phrase == "TicketNotEnough") {
+    	 prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+         output = replaceColorMacros(getOutputConfig().getString("TicketNotEnough"));
+         message = prefix+output; 
+         return message;          
+       }
 
      if (phrase == "NoTickets") {
        prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));

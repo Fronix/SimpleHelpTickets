@@ -77,7 +77,7 @@ public class husklart implements CommandExecutor {
                 con = plugin.mysql.getConnection();
                 
                 Statement stmtCOUNT = con.createStatement();
-                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Hus WHERE owner='"+owner+"' AND status='PENDING' OR status='DENIED'");
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Hus WHERE owner='"+owner+"' AND status='PENDING' OR status='DENIED' OR status='ACCEPTED'");
                 rs.next();
                 final int ticketCount = rs.getInt("MaxTickets");
                 int MaxTickets = plugin.getConfig().getInt("MaxHouseInspect");

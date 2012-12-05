@@ -8,6 +8,7 @@ import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -192,6 +193,7 @@ public class replyticket implements CommandExecutor {
                 Player target = Bukkit.getPlayer(rs.getString("owner"));          
                 if (target != null && target != player) {
                   target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
+                  target.sendMessage(ChatColor.GOLD + "Använd: " + plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-checkticket").replace("<#ID>", id) + ChatColor.GOLD + " för att kolla svaret"));
                   return true;
                 }
               } catch(Exception e) {

@@ -49,11 +49,16 @@ public class taketicket implements CommandExecutor {
     }
 
     int ticketNumber = Integer.parseInt( args[0] );
+    String ConsoleAdmin = "";
     
     if(player == null){
     	
-        String ConsoleAdmin = args[1];
-        Player AssignToAdmin = Bukkit.getPlayer(ConsoleAdmin);
+	if(args.length != 2){
+		sender.sendMessage("Usage: /tansvar <id> <admin>");
+		return true;
+	}
+        ConsoleAdmin = args[1];
+        Player AssignToAdmin = plugin.getServer().getPlayer(ConsoleAdmin);
     //Console command
 	    try {
 		      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
@@ -104,22 +109,22 @@ public class taketicket implements CommandExecutor {
 		        rs.close();
 		        return true;
 		      }
-		
+		      // NOTIFY ADMIN AND USERS
+		      String admin = AssignToAdmin.getDisplayName();
+		      Player target = plugin.getServer().getPlayer(owner);
+		      
 		      // TELEPORT THE ASSIGNED ADMIN AND NOTIFY HIM
-		      if (!owner.equalsIgnoreCase("CONSOLE") && AssignToAdmin.isOnline()) {
+		      if (!owner.equalsIgnoreCase("CONSOLE") && AssignToAdmin != target && AssignToAdmin.isOnline()) {
 		    	  AssignToAdmin.sendMessage(plugin.getMessage("TakeTicketAssignedADMIN").replace("&arg", id));
 		    	  AssignToAdmin.sendMessage(plugin.getMessage("TakeTicketAssignedADMINTP"));
 		    	  AssignToAdmin.teleport(locc);
 		      }
-		      // NOTIFY ADMIN AND USERS
-		      String admin = AssignToAdmin.getDisplayName();
-		      Player target = plugin.getServer().getPlayer(owner);
 		      // ASSIGN ADMIN
 		      stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
 		      // NOTIFY -OTHER- ADMINS 
 		      Player[] players = Bukkit.getOnlinePlayers();
 		      for(Player op: players){
-		        if(op.hasPermission("sht.admin") && op != AssignToAdmin) {
+		        if(op.hasPermission("sht.admin") && op != AssignToAdmin && AssignToAdmin != target) {
 		          op.sendMessage(plugin.getMessage("TakeTicketADMIN").replace("&arg", id).replace("&admin", admin));
 		        }
 		      }
