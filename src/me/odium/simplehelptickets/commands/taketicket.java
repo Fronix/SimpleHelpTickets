@@ -49,10 +49,11 @@ public class taketicket implements CommandExecutor {
     }
 
     int ticketNumber = Integer.parseInt( args[0] );
-    String ConsoleAdmin = args[1];
-    Player AssignToAdmin = Bukkit.getPlayer(ConsoleAdmin);
     
     if(player == null){
+    	
+        String ConsoleAdmin = args[1];
+        Player AssignToAdmin = Bukkit.getPlayer(ConsoleAdmin);
     //Console command
 	    try {
 		      if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
