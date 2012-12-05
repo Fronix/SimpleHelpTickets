@@ -288,8 +288,8 @@ public class SimpleHelpTickets extends JavaPlugin {
 	  sender.sendMessage(getMessage("UserCommandsMenu-Title"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-ticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-tickets"));
-	  if(sender.hasPermission("sht.klart")){
-		  sender.sendMessage(getMessage("UserCommandsMenu-klart"));
+	  if(sender.hasPermission("sht.house")){
+		  sender.sendMessage(getMessage("UserCommandsMenu-house"));
 	  }
 	  sender.sendMessage(getMessage("UserCommandsMenu-checkticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-replyticket"));
@@ -311,8 +311,10 @@ public class SimpleHelpTickets extends JavaPlugin {
 	public void displayHouseHelp(CommandSender sender){
 		sender.sendMessage(getMessage("HelpPageTitle"));
 		sender.sendMessage(getMessage("UserHusCommandsMenu-house"));
-		sender.sendMessage(getMessage("UserHusCommandsMenu-klart"));
-		sender.sendMessage(getMessage("UserHusCommandsMenu-housestatus"));
+		if(sender != null || sender.hasPermission("sht.house.klart")) {
+			sender.sendMessage(getMessage("UserHusCommandsMenu-klart"));
+			sender.sendMessage(getMessage("UserHusCommandsMenu-housestatus"));
+		}
 		if(sender != null || sender.hasPermission("sht.admin")) {
 			sender.sendMessage(getMessage("AdminCommandsMenu-Title"));
 			sender.sendMessage(getMessage("UserHusCommandsMenu-ahouseaccept"));
@@ -424,9 +426,9 @@ public class SimpleHelpTickets extends JavaPlugin {
       return message;             
     }
 	  
-	  if (phrase == "UserCommandsMenu-klart") {
-	      prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-klart"));
-	      output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-klart"));
+	  if (phrase == "UserCommandsMenu-house") {
+	      prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-house"));
+	      output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-house"));
 	      message = prefix+output;
 	      return message;             
 	}

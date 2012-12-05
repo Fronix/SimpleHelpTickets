@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 2.0
+version: 2.1
 commands:
    sht:
       aliases: [helptickets, simplehelptickets, support]
@@ -10,7 +10,7 @@ commands:
    ticket:
       aliases: [helpme, grief]
       description: Open a help ticket
-      permission: sht.ticket
+      permission:
       usage: /ticket <Description>
    tickets:
       description: Review your/all help tickets
@@ -24,7 +24,7 @@ commands:
    replyticket:
       aliases: [tsvara]
       description: reply to a help ticket
-      permission: sht.ticket
+      permission:
       usage: /replyticket <#> <reply>
    taketicket:
       aliases: [tansvar]
@@ -49,16 +49,16 @@ commands:
    house:
       aliases: [hus, noobvillehus]
       description: Shows house commands menu
-      permission: sht.house
+      permission:
       usage: /klart
    klart:
       description: Används för att få sitt hus inspekterat
-      permission: sht.house.klart
+      permission:
       usage: /klart
    housestatus:
       aliases: [hstatus, husstatus]
       description: Hus status
-      permission: sht.house.status
+      permission:
       usage: /housestatus
    ahouse:
       aliases: [ahus, adminhus]

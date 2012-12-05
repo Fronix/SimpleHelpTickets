@@ -95,7 +95,7 @@ public class closeticket implements CommandExecutor {
           // IF TICKETOWNER IS ONLINE, AND NOT THE USER WHO TRIGGERED THE EVENT, LET THEM KNOW OF THE CHANGE TO THEIR TICKET
           if (target != null && target != player) {
             target.sendMessage(plugin.getMessage("TicketClosedOWNER").replace("&arg", ""+id).replace("&admin", admin));
-            target.sendMessage(ChatColor.GOLD + "Använd: " + plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-delticket").replace("<#>", ""+id) + ChatColor.GOLD +" för att kolla information"));
+            target.sendMessage(ChatColor.GOLD + "Använd: " + plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-checkticket").replace("<#ID>", ""+id) + ChatColor.GOLD +" för att kolla information"));
           }
           // NOTIFY ADMINS OF CHANGE TO TICKET
           Player[] players = Bukkit.getOnlinePlayers();

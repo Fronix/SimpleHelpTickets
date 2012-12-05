@@ -168,6 +168,8 @@ public class ticket implements CommandExecutor {
             }
             // PLAYER COMMANDs
           } else { 
+        	  
+        if(player.hasPermission("sht.ticket")){
             // SET VARIABLES
             String date = plugin.getCurrentDTG("date");
             String owner = player.getName();
@@ -294,7 +296,11 @@ public class ticket implements CommandExecutor {
               sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
             }
           }
+          }else{
+        	  player.sendMessage(plugin.getMessage("NoPermission"));
+        	  return true;
           }
+    }
     }
 
     return true;

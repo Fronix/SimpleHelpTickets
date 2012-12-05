@@ -153,7 +153,7 @@ public class tickets implements CommandExecutor {
         sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
         return true;
       }
-    } else {
+    } else if(player.hasPermission("sht.ticket")) {
       // DISPLAY USER TICKETS
       try {
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
@@ -211,6 +211,9 @@ public class tickets implements CommandExecutor {
         return true;
       }
 
+    }else{
+    	player.sendMessage(plugin.getMessage("NoPermission"));
+    	return true;
     }
     return true;  
   }

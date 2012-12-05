@@ -2,6 +2,7 @@ package me.odium.simplehelptickets.listeners;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,7 +30,7 @@ public class PListener implements Listener {
   java.sql.Statement stmt;
   Connection con;
 
-  @EventHandler(priority = EventPriority.LOW)
+  @EventHandler(priority = EventPriority.HIGH)
   public void onPlayerJoin(PlayerJoinEvent event) {      
     Player player = event.getPlayer();
     // IF PLAYER IS ADMIN
@@ -76,7 +77,7 @@ public class PListener implements Listener {
         }
 
         stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND status='OPEN'" );
+        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"' " );
                 if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
                   rs.next(); //sets pointer to first record in result set
                 }
@@ -86,34 +87,33 @@ public class PListener implements Listener {
           rs.close();
           stmt.close();
         } else if(ticketTotal > 0) {
-          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+/*          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND expiration IS NOT NULL" );
           while (rs.next()) {
             String date = rs.getString("date");
             String expiration = rs.getString("expiration");
             String id = rs.getString("id");           
 
-            // IF AN EXPIRATION HAS BEEN APPLIED 
-            if (expiration != null) {
+            // IF AN EXPIRATION HAS BEEN APPLIED
               // CONVERT DATE-STRINGS FROM DB TO DATES 
-              Date dateNEW = new SimpleDateFormat("dd/MMM/yy HH:mm:ss", Locale.ENGLISH).parse(date);
-              Date expirationNEW = new SimpleDateFormat("dd/MMM/yy HH:mm:ss", Locale.ENGLISH).parse(expiration);
+              Date dateNEW = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.ENGLISH).parse(plugin.getCurrentDTG(date));
+              Date expirationNEW = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.ENGLISH).parse(expiration);
               // COMPARE STRINGS
               int HasExpired = dateNEW.compareTo(expirationNEW);
               player.sendMessage(HasExpired + " Testing");
               if (HasExpired >= 0) {
-                //stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");
-            	  player.sendMessage("Ticket har gått ut!");
+                stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");
+            	player.sendMessage("Ticket har gått ut!");
               }else{
-            	  player.sendMessage("Ticket har gått ut!");
+            	player.sendMessage("Ticket har gått ut!");
               }
-            }
+
           }
-          rs.close();
-          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal2 FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+          rs.close(); */
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal2 FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND status='OPEN'" );
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
-          ticketTotal = rs.getInt("ticketTotal2");
+          int ticketTotalTwo = rs.getInt("ticketTotal2");
           
           rs.close();
           rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
@@ -124,10 +124,10 @@ public class PListener implements Listener {
           if (DisplayTicketUser == true) {
 
             if (adminreply.equalsIgnoreCase("NONE")) {
-            	if(ticketTotal > 1){
-            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
+            	if(ticketTotalTwo > 1){
+            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotalTwo+""));
             	}else{
-            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotal+""));
+            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotalTwo+""));
             	}
               rs.close();
               stmt.close();

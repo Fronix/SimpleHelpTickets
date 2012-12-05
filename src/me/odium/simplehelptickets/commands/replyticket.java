@@ -120,7 +120,7 @@ public class replyticket implements CommandExecutor {
 
 
               return true;
-            } else {
+            } else if(player.hasPermission("sht.ticket")){
               // PLAYER COMMANDS
               String admin = player.getName();
               // CHECK IF TICKET EXISTS
@@ -208,6 +208,9 @@ public class replyticket implements CommandExecutor {
 
               return true;
             }
+            }else{
+            	player.sendMessage(plugin.getMessage("NoPermission"));
+            	return true;
             }
           } catch(Exception e) {
             if (e.toString().contains("ResultSet closed")) {

@@ -137,6 +137,9 @@ public class husklart implements CommandExecutor {
               
             }
             /* THIS REQUIRES MYSQL!!!!!! */
+	    }else{
+	    	player.sendMessage(plugin.getMessage("NoPermission"));
+	    	return true;
 	    }
 	    return true;
 	  }

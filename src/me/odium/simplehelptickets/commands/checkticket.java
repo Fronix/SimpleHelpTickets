@@ -115,12 +115,12 @@ public class checkticket implements CommandExecutor {
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             if (rs.getTimestamp("expiration") != null) {
               expiration = new SimpleDateFormat("dd/MMM/yy HH:mm").format(rs.getTimestamp("expiration"));
-              sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", expiration));
+              sender.sendMessage(plugin.getMessage("CheckListExpiration").replace("&arg", expiration));
             }
           } else {
             if (rs.getTimestamp("expiration") != null) {
             expiration = rs.getString("expiration");
-            sender.sendMessage(plugin.getMessage("CheckListStatus").replace("&arg", expiration));
+            sender.sendMessage(plugin.getMessage("CheckListExpiration").replace("&arg", expiration));
             }
 
 
