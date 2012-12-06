@@ -82,6 +82,7 @@ public class ticket implements CommandExecutor {
             String status = "OPEN";
             String admin = "NONE";
             String expire = null;
+            String is_house = "0";
             // REFERENCE CONNECTION AND ADD DATA
             if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 
@@ -89,7 +90,7 @@ public class ticket implements CommandExecutor {
               try {
                 con = plugin.mysql.getConnection();
                 stmt = con.createStatement();
-                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration, is_house) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
                 // INSERT INTO lyrics1(name, artist) values(?, ?)
                  
                 statement.setString(1, details);              
@@ -106,6 +107,7 @@ public class ticket implements CommandExecutor {
                 statement.setString(12, status);
                 statement.setString(13, admin);
                 statement.setString(14, expire);
+                statement.setString(15, is_house);
 
                 statement.executeUpdate();
                 statement.close();
@@ -130,7 +132,7 @@ public class ticket implements CommandExecutor {
               try {        
                 con = service.getConnection();
                 stmt = con.createStatement();
-                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
                 // description, date, owner, world, x, y, z, p, f, reply, status, admin
 
                 statement.setString(2, details);              
@@ -147,6 +149,7 @@ public class ticket implements CommandExecutor {
                 statement.setString(13, status);
                 statement.setString(14, admin);
                 statement.setString(15, expire);
+                statement.setString(15, is_house);
 
                 statement.executeUpdate();
                 statement.close();
@@ -184,6 +187,7 @@ public class ticket implements CommandExecutor {
             String status = "OPEN";
             String admin = "NONE";
             String expire = null;
+            String is_house = "0";
             // REFERENCE CONNECTION AND ADD DATA
             if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 
@@ -192,7 +196,7 @@ public class ticket implements CommandExecutor {
                 con = plugin.mysql.getConnection();
                 
                 Statement stmtCOUNT = con.createStatement();
-                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN'");
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN' AND is_house'0'");
                 rs.next();
                 final int ticketCount = rs.getInt("MaxTickets");
                 int MaxTickets = plugin.getConfig().getInt("MaxTickets");
@@ -209,7 +213,7 @@ public class ticket implements CommandExecutor {
                 }
                 
                 stmt = con.createStatement();
-                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration, is_house) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
                
                     statement.setString(1, details);              
                     statement.setString(2, date);             
@@ -225,6 +229,7 @@ public class ticket implements CommandExecutor {
                     statement.setString(12, status);
                     statement.setString(13, admin);
                     statement.setString(14, expire);
+                    statement.setString(15, is_house);
 
                     statement.executeUpdate();
                     statement.close();
@@ -261,7 +266,7 @@ public class ticket implements CommandExecutor {
               }
               
               stmt = con.createStatement();
-              PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+              PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration, is_house) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
              
                   statement.setString(1, details);              
                   statement.setString(2, date);             
@@ -277,6 +282,7 @@ public class ticket implements CommandExecutor {
                   statement.setString(12, status);
                   statement.setString(13, admin);
                   statement.setString(14, expire);
+                  statement.setString(15, is_house);
 
                   statement.executeUpdate();
                   statement.close();

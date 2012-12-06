@@ -45,7 +45,7 @@ public class tickets implements CommandExecutor {
 
         if (args.length == 0) {    
           // DISPLAY OPEN TICKETS
-          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE status='"+"OPEN"+"' ORDER BY id ASC");
+          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE status='"+"OPEN"+"' AND is_house='0' ORDER BY id ASC");
           int iterations = 0;
           sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Open Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
           while(rs.next()){
@@ -117,7 +117,7 @@ public class tickets implements CommandExecutor {
           return true;
           // DISPLAY CLOSED TICKETS
         } else if (args.length == 1 && args[0].equalsIgnoreCase("-c")) {     
-          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE status='"+"CLOSED"+"' ORDER BY id ASC");          
+          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE status='"+"CLOSED"+"' AND is_house='0' ORDER BY id ASC");          
           int iterations = 0;
           sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Stängda Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
           while(rs.next()){
@@ -146,7 +146,7 @@ public class tickets implements CommandExecutor {
           stmt.close();
           return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("-h")) {
-            rs = stmt.executeQuery("SELECT * FROM SHT_Tickets ORDER BY id ASC");          
+            rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE is_house='1' ORDER BY id ASC");          
             int iterations = 0;
             sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Hus Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
             while(rs.next()){

@@ -59,7 +59,7 @@ public class closeticket implements CommandExecutor {
         }
         stmt = con.createStatement();
         // GET TICKETRFROM DB
-        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='" + id + "'");
+        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='" + id + "' AND is_house='0'");
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           rs.next(); //sets pointer to first record in result set
         }
@@ -87,7 +87,7 @@ public class closeticket implements CommandExecutor {
           String expiration = plugin.getExpiration(date);
           
           // UPDATE THE TICKET
-          stmt.executeUpdate("UPDATE SHT_Tickets SET status='"+"CLOSED"+"', admin='"+admin+"', expiration='"+expiration+"' WHERE id='"+id+"'");
+          stmt.executeUpdate("UPDATE SHT_Tickets SET status='CLOSED', admin='"+admin+"', expiration='"+expiration+"' WHERE id='"+id+"'");
           sender.sendMessage(plugin.getMessage("TicketClosed").replace("&arg", ""+id));
           
           stmt.close();
@@ -143,7 +143,7 @@ public class closeticket implements CommandExecutor {
         }
         stmt = con.createStatement();
         // GET TICKET FROM DB
-        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='" + id + "'");
+        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='" + id + "' AND is_house='0'");
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           rs.next(); //sets pointer to first record in result set
         }

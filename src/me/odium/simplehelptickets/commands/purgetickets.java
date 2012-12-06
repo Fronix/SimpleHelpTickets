@@ -35,7 +35,7 @@ public class purgetickets implements CommandExecutor {
         con = service.getConnection();
         }
         stmt = con.createStatement();
-        stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE status='"+"CLOSED"+"'");
+        stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE status='CLOSED' OR status='ACCEPTED'");
 //        sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GREEN+"All Closed Tickets Successfully Purged");
         sender.sendMessage(plugin.getMessage("AllClosedTicketsPurged"));
       } catch(Exception e) {

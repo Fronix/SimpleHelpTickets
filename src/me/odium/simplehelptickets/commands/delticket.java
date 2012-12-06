@@ -54,7 +54,7 @@ public class delticket implements CommandExecutor {
           }
           stmt = con.createStatement();
           //CHECK IF TICKET EXISTS
-          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+ id +"'");
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+ id +"' AND is_house='0'");
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
@@ -89,7 +89,7 @@ public class delticket implements CommandExecutor {
         }
         stmt = con.createStatement();
         //CHECK IF TICKET EXISTS
-        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+ id +"'");
+        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+ id +"' AND is_house='0'");
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           rs.next(); //sets pointer to first record in result set
         }

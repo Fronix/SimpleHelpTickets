@@ -64,6 +64,7 @@ public class husklart implements CommandExecutor {
             String status = "PENDING";
             String admin = "NONE";
             String expire = null;
+            String is_house = "1";
             
             Chunk chunk = player.getLocation().getChunk();
             String ChunkOwner = MyChunkChunk.getOwner(chunk);
@@ -77,7 +78,7 @@ public class husklart implements CommandExecutor {
                 con = plugin.mysql.getConnection();
                 
                 Statement stmtCOUNT = con.createStatement();
-                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND status='PENDING' OR status='DENIED' OR status='ACCEPTED'");
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND is_house='1' AND status='PENDING' OR status='DENIED' OR status='ACCEPTED' ");
                 rs.next();
                 final int ticketCount = rs.getInt("MaxTickets");
                 int MaxTickets = plugin.getConfig().getInt("MaxHouseInspect");
@@ -91,7 +92,7 @@ public class husklart implements CommandExecutor {
                 if(MyChunkChunk.isClaimed(chunk)){
 	                if(ChunkOwner.equalsIgnoreCase(player.getName())){
 		                stmt = con.createStatement();
-		                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+		                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration, is_house) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		               
 		                    statement.setString(1, plugin.getMessage("HouseInspection"));              
 		                    statement.setString(2, date);             
@@ -107,6 +108,7 @@ public class husklart implements CommandExecutor {
 		                    statement.setString(12, status);
 		                    statement.setString(13, admin);
 		                    statement.setString(14, expire);
+		                    statement.setString(15, is_house);
 		
 		                    statement.executeUpdate();
 		                    statement.close();

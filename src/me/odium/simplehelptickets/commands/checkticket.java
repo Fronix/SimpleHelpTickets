@@ -53,7 +53,7 @@ public class checkticket implements CommandExecutor {
         }
         stmt = con.createStatement();
 
-        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"'");
+        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+ticketNumber+"' AND is_house='0'");
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           rs.next(); //sets pointer to first record in result set
         }
