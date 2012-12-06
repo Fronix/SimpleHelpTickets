@@ -241,7 +241,7 @@ public class taketicket implements CommandExecutor {
 	        player.teleport(locc);
 	      }
 	      // NOTIFY ADMIN AND USERS
-	      String admin = player.getDisplayName();
+	      String admin = player.getName();
 	      Player target = plugin.getServer().getPlayer(owner);
 	      // ASSIGN ADMIN
 	      stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");

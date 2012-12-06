@@ -42,12 +42,12 @@ public class ahus implements CommandExecutor {
     } else if (args.length == 1 && args[0].equalsIgnoreCase("g") || args[0].equalsIgnoreCase("godkänn") || args[0].equalsIgnoreCase("approve") && player.hasPermission("sht.admin")) {
 
 	    	if(MyChunkChunk.isClaimed(chunk) && player != null) {
-		    	String admin = player.getDisplayName();
+		    	String admin = player.getName();
 		    	try {
 		            con = plugin.mysql.getConnection();
 		            stmt = con.createStatement();
 		            
-		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Hus WHERE owner='"+ ChunkOwner +"' AND status != 'ACCEPTED' AND admin='NONE'");
+		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"' AND status != 'ACCEPTED' AND admin=''");
 		            if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		              rs.next(); //sets pointer to first record in result set
 		            }
@@ -58,15 +58,15 @@ public class ahus implements CommandExecutor {
 		              return true;
 		            }
 		
-		            rs = stmt.executeQuery("SELECT * FROM SHT_Hus WHERE owner='"+ ChunkOwner +"'");
+		            rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
 		            if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		              rs.next(); //sets pointer to first record in result set
 		            }
 		            
-		            stmt.executeUpdate("UPDATE SHT_Hus SET adminreply='Godkänt', admin='"+ admin +"', status='ACCEPTED' WHERE owner='"+ ChunkOwner +"'");
+		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='Godkänt', admin='"+ admin +"', status='ACCEPTED' WHERE owner='"+ ChunkOwner +"'");
 		            player.sendMessage("Spelarens hus är nu godkänt!");
 		            try {
-		                rs = stmt.executeQuery("SELECT * FROM SHT_Hus WHERE owner='"+ ChunkOwner +"'");
+		                rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
 		                if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		                  rs.next(); //sets pointer to first record in result set
 		                }
@@ -94,12 +94,12 @@ public class ahus implements CommandExecutor {
 	    } else if (args.length == 1 && args[0].equalsIgnoreCase("eg") || args[0].equalsIgnoreCase("ejgodkänt") || args[0].equalsIgnoreCase("denied") && player.hasPermission("sht.admin")) {
 	    	
 	    	if(MyChunkChunk.isClaimed(chunk) && player != null) {
-		    	String admin = player.getDisplayName();
+		    	String admin = player.getName();
 		    	try {
 		            con = plugin.mysql.getConnection();
 		            stmt = con.createStatement();
 		            
-		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Hus WHERE owner='"+ ChunkOwner +"' AND status != 'DENIED' AND admin='NONE'");
+		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"' AND status != 'DENIED' AND admin='NONE'");
 		            if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		              rs.next(); //sets pointer to first record in result set
 		            }
@@ -110,15 +110,15 @@ public class ahus implements CommandExecutor {
 		              return true;
 		            }
 		
-		            rs = stmt.executeQuery("SELECT * FROM SHT_Hus WHERE owner='"+ ChunkOwner +"'");
+		            rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
 		            if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		              rs.next(); //sets pointer to first record in result set
 		            }
 		            
-		            stmt.executeUpdate("UPDATE SHT_Hus SET adminreply='Ej godkänt', admin='"+ admin +"', status='DENIED' WHERE owner='"+ ChunkOwner +"'");
+		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='Ej godkänt', admin='"+ admin +"', status='DENIED' WHERE owner='"+ ChunkOwner +"'");
 		            player.sendMessage("Spelarens hus är nu godkänt!");
 		            try {
-		                rs = stmt.executeQuery("SELECT * FROM SHT_Hus WHERE owner='"+ ChunkOwner +"'");
+		                rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
 		                if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		                  rs.next(); //sets pointer to first record in result set
 		                }

@@ -54,10 +54,22 @@ public class PListener implements Listener {
           int ticketTotal = rs.getInt("ticketTotal");
           if (ticketTotal == 0) {
             // DO NOTHING
+          } else if(ticketTotal > 0) {
+            player.sendMessage(plugin.getMessage("AdminJoin").replace("&arg", ticketTotal+""));
+          }
+          
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='"+"PENDING"+"'");
+          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+            rs.next(); //sets pointer to first record in result set
+          }
+
+          ticketTotal = rs.getInt("ticketTotal");
+          if (ticketTotal == 0) {
+            // DO NOTHING
             rs.close();
             stmt.close();
           } else if(ticketTotal > 0) {
-            player.sendMessage(plugin.getMessage("AdminJoin").replace("&arg", ticketTotal+""));
+            player.sendMessage(plugin.getMessage("AdminJoinHouse").replace("&arg", ticketTotal+""));
             rs.close();
             stmt.close();
           }
@@ -107,13 +119,13 @@ public class PListener implements Listener {
             	player.sendMessage("Ticket har gått ut!");
               }
 
-          }
-          rs.close(); */
+          } */
+          rs.close();
           rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal2 FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND status='OPEN'" );
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
-          int ticketTotalTwo = rs.getInt("ticketTotal2");
+          ticketTotal = rs.getInt("ticketTotal2");
           
           rs.close();
           rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
@@ -124,10 +136,10 @@ public class PListener implements Listener {
           if (DisplayTicketUser == true) {
 
             if (adminreply.equalsIgnoreCase("NONE")) {
-            	if(ticketTotalTwo > 1){
-            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotalTwo+""));
+            	if(ticketTotal > 1){
+            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
             	}else{
-            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotalTwo+""));
+            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotal+""));
             	}
               rs.close();
               stmt.close();

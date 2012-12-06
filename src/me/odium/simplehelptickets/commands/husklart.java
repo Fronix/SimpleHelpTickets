@@ -77,7 +77,7 @@ public class husklart implements CommandExecutor {
                 con = plugin.mysql.getConnection();
                 
                 Statement stmtCOUNT = con.createStatement();
-                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Hus WHERE owner='"+owner+"' AND status='PENDING' OR status='DENIED' OR status='ACCEPTED'");
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND status='PENDING' OR status='DENIED' OR status='ACCEPTED'");
                 rs.next();
                 final int ticketCount = rs.getInt("MaxTickets");
                 int MaxTickets = plugin.getConfig().getInt("MaxHouseInspect");
@@ -91,7 +91,7 @@ public class husklart implements CommandExecutor {
                 if(MyChunkChunk.isClaimed(chunk)){
 	                if(ChunkOwner.equalsIgnoreCase(player.getName())){
 		                stmt = con.createStatement();
-		                PreparedStatement statement = con.prepareStatement("insert into SHT_Hus(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+		                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		               
 		                    statement.setString(1, plugin.getMessage("HouseInspection"));              
 		                    statement.setString(2, date);             
@@ -118,7 +118,7 @@ public class husklart implements CommandExecutor {
 		                    Player[] players = Bukkit.getOnlinePlayers();
 		                    for(Player op: players){
 		                      if(op.hasPermission("sht.admin") && op != player) {
-		                        String pl = "CONSOLE";
+		                    	  String pl = owner;
 		                        op.sendMessage(plugin.getMessage("HouseNewInspect").replace("%player", pl));
 		                      }
 		                    }

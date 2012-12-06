@@ -79,7 +79,7 @@ public class closeticket implements CommandExecutor {
           if (player == null) {
             admin = "CONSOLE";          
           } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
-            admin = player.getDisplayName();          
+            admin = player.getName();          
           }
           
           //GET EXPIRATION DATE
@@ -163,10 +163,10 @@ public class closeticket implements CommandExecutor {
           if (player == null) {
             admin = "CONSOLE";          
           } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
-            admin = player.getDisplayName();          
+            admin = player.getName();          
           }
           // UPDATE THE TICKET
-          stmt.executeUpdate("UPDATE SHT_Tickets SET status='"+"OPEN"+"', admin='"+admin+"', expiration=NULL WHERE id='"+id+"'");
+          stmt.executeUpdate("UPDATE SHT_Tickets SET status='OPEN', admin='"+admin+"', expiration=NULL WHERE id='"+id+"'");
 //          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.WHITE+"Ticket "+ChatColor.GOLD+id+ChatColor.WHITE+" Reopened");
           sender.sendMessage(plugin.getMessage("TicketReopened").replace("&arg", ""+id).replace("&admin", admin));
           stmt.close();
@@ -281,7 +281,7 @@ public class closeticket implements CommandExecutor {
 //              }
 //            }
 //          } else {
-//            String admin = player.getDisplayName();
+//            String admin = player.getName();
 //            if (plugin.getServer().getPlayer(placedby) != null && player != plugin.getServer().getPlayer(placedby)) {
 //              Player target = plugin.getServer().getPlayer(placedby);
 //              target.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ ChatColor.GOLD + admin + ChatColor.WHITE + " has closed your help ticket");

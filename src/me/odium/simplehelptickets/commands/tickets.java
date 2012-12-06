@@ -145,8 +145,37 @@ public class tickets implements CommandExecutor {
           rs.close();
           stmt.close();
           return true;
-        } else if (args.length == 1 && !args[0].equalsIgnoreCase("-c") && !args[0].equalsIgnoreCase("-a") ) {
-          sender.sendMessage("/tickets [-a/-c]");
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("-h")) {
+            rs = stmt.executeQuery("SELECT * FROM SHT_Tickets ORDER BY id ASC");          
+            int iterations = 0;
+            sender.sendMessage(plugin.GOLD+"[ "+plugin.WHITE+ChatColor.BOLD+"Hus Tickets"+ChatColor.RESET+plugin.GOLD+" ]");
+            while(rs.next()){
+              iterations++;
+              String desc = rs.getString("description");
+              if (desc.length() > 18) {
+                desc = desc.substring(0, 18)+"...";
+              }
+              if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) {
+                sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+                // if both have replied
+              } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
+                sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
+              } else {
+                sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GRAY+desc);
+              }
+            }
+            if (iterations == 0) {            
+              sender.sendMessage(plugin.getMessage("NoTickets"));            
+              rs.close();
+              stmt.close();
+              return true;
+            }
+
+            rs.close();
+            stmt.close();
+            return true;
+        } else if (args.length == 1 && !args[0].equalsIgnoreCase("-c") && !args[0].equalsIgnoreCase("-a") && !args[0].equalsIgnoreCase("-h") ) {
+          sender.sendMessage("/tickets [-a/-c/-h]");
           return true;
         }
       } catch(Exception e) {

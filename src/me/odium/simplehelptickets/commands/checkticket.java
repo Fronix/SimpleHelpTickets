@@ -37,7 +37,6 @@ public class checkticket implements CommandExecutor {
 
       for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) {
-          //          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
           sender.sendMessage(plugin.getMessage("InvalidTicketNumber").replace("&arg", args[0]));
           return true;
         }

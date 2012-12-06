@@ -151,7 +151,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 			try{
 				mysql.open();
 				log.info("[SimpleHelpTickets] Connected to MySQL Database");
-				mysql.createTable();				
+				//mysql.createTable();				
 			}catch (Exception e){
 				log.info(e.getMessage());
 			}
@@ -439,7 +439,6 @@ public class SimpleHelpTickets extends JavaPlugin {
       message = prefix+output; 
       return message;             
     }
-	  
 	  if (phrase == "UserCommandsMenu-ticket") {
       prefix =  replaceColorMacros(getOutputConfig().getString("UserCommandsDescription-ticket"));
       output = replaceColorMacros(getOutputConfig().getString("UserCommandsMenu-ticket"));
@@ -767,6 +766,14 @@ public class SimpleHelpTickets extends JavaPlugin {
        message = prefix+output; 
        return message;             
      }
+     
+	  
+  if (phrase == "AdminJoinHouse") {
+      prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+      output = replaceColorMacros(getOutputConfig().getString("AdminJoinHouse"));
+      message = prefix+output; 
+      return message;             
+    }
      
      if (phrase == "UserJoin") {
        prefix =  ChatColor.GOLD+"* " + ChatColor.WHITE;

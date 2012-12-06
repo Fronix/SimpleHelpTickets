@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,8 @@ public class housestatus implements CommandExecutor {
 	    } else {
 	    	
 	    	if(player.hasPermission("sht.house.klart")){
-		      try {
+	    		
+	    	try {
 		        if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		          con = plugin.mysql.getConnection();
 		        } else {
@@ -47,12 +49,12 @@ public class housestatus implements CommandExecutor {
 		        }
 		        stmt = con.createStatement();
 	
-		        rs = stmt.executeQuery("SELECT * FROM SHT_Hus WHERE owner='" + player.getName() + "'");
+		        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='" + player.getName() + "'");
 		        if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		          rs.next(); //sets pointer to first record in result set
 		        }
 	
-		        if (player == null || player.hasPermission("sht.admin") || rs.getString("owner").equalsIgnoreCase(player.getName())) {
+		        if (player == null || rs.getString("owner").equalsIgnoreCase(player.getName())) {
 		          String date;
 		          String expiration;
 	
@@ -118,13 +120,7 @@ public class housestatus implements CommandExecutor {
 		        }
 	
 		      } catch (SQLException e) {
-		        if (e.toString().contains("empty result set.")) {
-		          sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
-		          return true;          
-		        } else {
-		          sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
-		          return true;
-		        }
+		        sender.sendMessage(ChatColor.RED + "Du har ingen hus ticket!");
 		      }
 	    	}else{
 	    		player.sendMessage(plugin.getMessage("NoPermission"));
