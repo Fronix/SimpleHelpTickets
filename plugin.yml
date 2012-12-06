@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 2.1
+version: 2.2
 commands:
    sht:
       aliases: [helptickets, simplehelptickets, support]
@@ -65,3 +65,24 @@ commands:
       description: Administrate house tickets
       permission: sht.admin
       usage: /ahouse <accept,deny>
+      
+      
+permissions:
+  sht.admin:
+    description: Yeh
+    default: op
+  sht.house.klart:
+    description: Yeh
+    default: op
+  sht.ticket:
+    description: Yeh
+    default: true
+  sht.admin:
+    description: Yeh
+    default: op
+  sht.purge:
+    description: Yeh
+    default: op
+  sht.reload:
+    description: Yeh
+    default: op

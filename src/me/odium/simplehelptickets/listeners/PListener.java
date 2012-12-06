@@ -11,6 +11,7 @@ import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -46,7 +47,7 @@ public class PListener implements Listener {
           }
           stmt = con.createStatement();
 
-          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='"+"OPEN"+"'");
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='OPEN' AND is_house='0'");
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
@@ -58,7 +59,7 @@ public class PListener implements Listener {
             player.sendMessage(plugin.getMessage("AdminJoin").replace("&arg", ticketTotal+""));
           }
           
-          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='"+"PENDING"+"'");
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='PENDING' OR status='DENIED' AND is_house='1'");
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
@@ -89,7 +90,7 @@ public class PListener implements Listener {
         }
 
         stmt = con.createStatement();
-        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"' " );
+        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND is_house='0'" );
                 if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
                   rs.next(); //sets pointer to first record in result set
                 }
@@ -97,64 +98,43 @@ public class PListener implements Listener {
         if (ticketTotal == 0) {
           // DO NOTHING
           rs.close();
-          stmt.close();
         } else if(ticketTotal > 0) {
-/*          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND expiration IS NOT NULL" );
-          while (rs.next()) {
-            String date = rs.getString("date");
-            String expiration = rs.getString("expiration");
-            String id = rs.getString("id");           
-
-            // IF AN EXPIRATION HAS BEEN APPLIED
-              // CONVERT DATE-STRINGS FROM DB TO DATES 
-              Date dateNEW = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.ENGLISH).parse(plugin.getCurrentDTG(date));
-              Date expirationNEW = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.ENGLISH).parse(expiration);
-              // COMPARE STRINGS
-              int HasExpired = dateNEW.compareTo(expirationNEW);
-              player.sendMessage(HasExpired + " Testing");
-              if (HasExpired >= 0) {
-                stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");
-            	player.sendMessage("Ticket har gått ut!");
-              }else{
-            	player.sendMessage("Ticket har gått ut!");
-              }
-
-          } */
-          rs.close();
           rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal2 FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND status='OPEN'" );
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
-          ticketTotal = rs.getInt("ticketTotal2");
+          int ticketTotaltwo = rs.getInt("ticketTotal2");
           
+          if(ticketTotaltwo > 0){
           rs.close();
-          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
-          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-            rs.next(); //sets pointer to first record in result set
+	          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"' AND is_house='0'" );
+	          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+	            rs.next(); //sets pointer to first record in result set
+	          }
+	          String adminreply = rs.getString("adminreply");
+	          String id = rs.getString("id");
+	          if (DisplayTicketUser == true) {
+	
+	            if (adminreply.equalsIgnoreCase("NONE")) {
+	            	if(ticketTotal > 1){
+	            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
+	            	}else{
+	            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotal+""));
+	            	}
+	              rs.close();
+	            } else {
+	              player.sendMessage(ChatColor.GOLD + "Du har fått svar på din ticket, skriv "+ ChatColor.AQUA +"/tinfo " + id + ChatColor.GOLD + " för att se svaret");
+	              rs.close();
+	            }
+	
+	          }
           }
-          String adminreply = rs.getString("adminreply");
-          if (DisplayTicketUser == true) {
 
-            if (adminreply.equalsIgnoreCase("NONE")) {
-            	if(ticketTotal > 1){
-            		player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
-            	}else{
-            		player.sendMessage(plugin.getMessage("UserJoinOne").replace("&arg", ticketTotal+""));
-            	}
-              rs.close();
-              stmt.close();
-            } else {
-              player.sendMessage(plugin.getMessage("UserJoin-TicketReplied"));
-              rs.close();
-              stmt.close();
-            }
-
-          }
-        }
-
+      	}
+      
       } catch(Exception e) {
         plugin.log.info(plugin.getMessage("Error").replace("&arg", e.toString()));
-      }      
+      }
     }
   }
 }

@@ -151,7 +151,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 			try{
 				mysql.open();
 				log.info("[SimpleHelpTickets] Connected to MySQL Database");
-				//mysql.createTable();				
+				mysql.createTable();				
 			}catch (Exception e){
 				log.info(e.getMessage());
 			}
@@ -294,11 +294,9 @@ public class SimpleHelpTickets extends JavaPlugin {
 	  sender.sendMessage(getMessage("UserCommandsMenu-checkticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-replyticket"));
 	  sender.sendMessage(getMessage("UserCommandsMenu-closeticket"));
-	  sender.sendMessage(getMessage("UserCommandsMenu-delticket"));
 	  if(sender == null || sender.hasPermission("sht.admin")) {
 	    sender.sendMessage(getMessage("AdminCommandsMenu-Title"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-tickets"));
-	    sender.sendMessage(getMessage("ConsoleCommandsMenu-taketicket"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-taketicket"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-replyticket"));
 	    sender.sendMessage(getMessage("AdminCommandsMenu-closeticket"));
@@ -311,17 +309,14 @@ public class SimpleHelpTickets extends JavaPlugin {
 	public void displayHouseHelp(CommandSender sender){
 		sender.sendMessage(getMessage("HelpPageTitle"));
 		sender.sendMessage(getMessage("UserHusCommandsMenu-house"));
-		if(sender != null || sender.hasPermission("sht.house.klart")) {
+		if(sender == null || sender.hasPermission("sht.house.klart")) {
 			sender.sendMessage(getMessage("UserHusCommandsMenu-klart"));
 			sender.sendMessage(getMessage("UserHusCommandsMenu-housestatus"));
 		}
-		if(sender != null || sender.hasPermission("sht.admin")) {
+		if(sender == null || sender.hasPermission("sht.admin")) {
 			sender.sendMessage(getMessage("AdminCommandsMenu-Title"));
 			sender.sendMessage(getMessage("UserHusCommandsMenu-ahouseaccept"));
 			sender.sendMessage(getMessage("UserHusCommandsMenu-ahousedeny"));
-		}
-		if(sender != null || sender.hasPermission("sht.house.delete")){
-			sender.sendMessage(getMessage("UserHusCommandsMenu-ahousedelete"));
 		}
 	}
 

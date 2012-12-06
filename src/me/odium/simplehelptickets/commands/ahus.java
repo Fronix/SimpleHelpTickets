@@ -2,6 +2,7 @@ package me.odium.simplehelptickets.commands;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Arrays;
 
 import me.ellbristow.mychunk.MyChunkChunk;
 import me.odium.simplehelptickets.DBConnection;
@@ -43,11 +44,12 @@ public class ahus implements CommandExecutor {
 
 	    	if(MyChunkChunk.isClaimed(chunk) && player != null) {
 		    	String admin = player.getName();
+		            
 		    	try {
 		            con = plugin.mysql.getConnection();
 		            stmt = con.createStatement();
 		            
-		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"' AND status != 'ACCEPTED' AND admin=''");
+		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"' AND status = 'DENIED' OR status = 'PENDING' AND admin='NONE' AND is_house='1'");
 		            if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		              rs.next(); //sets pointer to first record in result set
 		            }
@@ -63,7 +65,7 @@ public class ahus implements CommandExecutor {
 		              rs.next(); //sets pointer to first record in result set
 		            }
 		            
-		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='Godkänt', admin='"+ admin +"', status='ACCEPTED' WHERE owner='"+ ChunkOwner +"'");
+		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='Huset är godkänt', admin='"+ admin +"', status='ACCEPTED' WHERE owner='"+ ChunkOwner +"'");
 		            player.sendMessage("Spelarens hus är nu godkänt!");
 		            try {
 		                rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
@@ -91,15 +93,33 @@ public class ahus implements CommandExecutor {
 				return true;
 		    }
 		    
-	    } else if (args.length == 1 && args[0].equalsIgnoreCase("eg") || args[0].equalsIgnoreCase("ejgodkänt") || args[0].equalsIgnoreCase("denied") && player.hasPermission("sht.admin")) {
+	    } else if (args.length >= 1 && args[0].equalsIgnoreCase("eg") || args[0].equalsIgnoreCase("ejgodkänt") || args[0].equalsIgnoreCase("denied") && player.hasPermission("sht.admin")) {
+	    	
+	    	if(args.length < 2){
+	    		player.sendMessage(ChatColor.RED + "Du måste skriva en anledning!");
+	    		return true;
+	    	}
 	    	
 	    	if(MyChunkChunk.isClaimed(chunk) && player != null) {
 		    	String admin = player.getName();
+		        StringBuilder sb = new StringBuilder();
+		        for (String arg : args)
+		          sb.append(arg + " ");            
+		            String[] temp = sb.toString().split(" ");
+		            String[] temp2 = Arrays.copyOfRange(temp, 1, temp.length);
+		            sb.delete(0, sb.length());
+		            for (String details : temp2)
+		            {
+		              sb.append(details);
+		              sb.append(" ");
+		            }
+		            String details = sb.toString().replace("'", "''");
+		            
 		    	try {
 		            con = plugin.mysql.getConnection();
 		            stmt = con.createStatement();
 		            
-		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"' AND status != 'DENIED' AND admin='NONE'");
+		            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"' AND status = 'PENDING' AND is_house='1'");
 		            if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		              rs.next(); //sets pointer to first record in result set
 		            }
@@ -115,8 +135,8 @@ public class ahus implements CommandExecutor {
 		              rs.next(); //sets pointer to first record in result set
 		            }
 		            
-		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='Ej godkänt', admin='"+ admin +"', status='DENIED' WHERE owner='"+ ChunkOwner +"'");
-		            player.sendMessage("Spelarens hus är nu godkänt!");
+		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+ details +"', admin='"+ admin +"', status='DENIED' WHERE owner='"+ ChunkOwner +"'");
+		            player.sendMessage("Spelarens hus är ej godkänt!");
 		            try {
 		                rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
 		                if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
@@ -142,16 +162,6 @@ public class ahus implements CommandExecutor {
 		    	player.sendMessage(ChatColor.RED + "Du måste stå i en chunk som ägs av en spelare!");
 				return true;
 		    }
-	    	
-	    } else if (args.length == 1 && args[0].equalsIgnoreCase("d") || args[0].equalsIgnoreCase("del") || args[0].equalsIgnoreCase("tabort") && player.hasPermission("sht.house.delete")) {
-	    	
-	    	if(MyChunkChunk.isClaimed(chunk) && player != null) {
-	    		player.sendMessage("Tabort hus ticket, inte klart än.");
-				return true;
-		    } else {
-		    	player.sendMessage(ChatColor.RED + "Du måste stå i en chunk som ägs av en spelare!");
-				return true;
-	  	    }
 	    	
 	    }
     return true;

@@ -53,8 +53,12 @@ public class housestatus implements CommandExecutor {
 		        if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		          rs.next(); //sets pointer to first record in result set
 		        }
-	
-		        if (player == null || rs.getString("owner").equalsIgnoreCase(player.getName())) {
+		        
+		        if(rs.getString("status").equalsIgnoreCase("ACCEPTED")){
+		        	player.sendMessage(ChatColor.RED + "Ditt hus är redan accepterat!");
+		        	rs.close();
+		        	return true;
+		        }else if (rs.getString("owner").equalsIgnoreCase(player.getName())) {
 		          String date;
 		          String expiration;
 	
