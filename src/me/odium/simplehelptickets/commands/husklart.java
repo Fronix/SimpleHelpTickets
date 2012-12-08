@@ -11,6 +11,7 @@ import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.command.*;
@@ -78,20 +79,33 @@ public class husklart implements CommandExecutor {
                 con = plugin.mysql.getConnection();
                 
                 Statement stmtCOUNT = con.createStatement();
-                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND is_house='1' AND status='PENDING' OR status='DENIED' OR status='ACCEPTED' ");
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets, status, id FROM SHT_Tickets WHERE owner='"+owner+"' AND is_house='1'");
                 rs.next();
                 final int ticketCount = rs.getInt("MaxTickets");
+                final String ticketStatus = rs.getString("status");
+                final int id = rs.getInt("id");
                 int MaxTickets = plugin.getConfig().getInt("MaxHouseInspect");
                 
-                if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin")) {
-                  sender.sendMessage(plugin.getMessage("HouseMaxInspect"));
-                  stmtCOUNT.close();
-                  return true;                
+
+                if(!ticketStatus.equalsIgnoreCase("DENIED")){
+                	
+                	if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin") && ticketStatus.equalsIgnoreCase("PENDING")) {
+                        sender.sendMessage(plugin.getMessage("HouseMaxInspect"));
+                        stmtCOUNT.close();
+                        return true;                
+                    }else{
+                    	player.sendMessage(ChatColor.RED + "Ditt hus är redan accepterat!");
+                        stmtCOUNT.close();
+                    	return true;
+                    }
+                }else{
+                    stmtCOUNT.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+ id +"'");
+                    stmtCOUNT.close();
                 }
                 
                 if(MyChunkChunk.isClaimed(chunk)){
 	                if(ChunkOwner.equalsIgnoreCase(player.getName())){
-		                stmt = con.createStatement();
+	                	stmt = con.createStatement();
 		                PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration, is_house) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		               
 		                    statement.setString(1, plugin.getMessage("HouseInspection"));              
