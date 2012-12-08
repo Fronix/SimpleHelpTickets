@@ -146,6 +146,7 @@ public class ahus implements CommandExecutor {
 		                Player target = Bukkit.getPlayer(rs.getString("owner"));          
 		                if (target != null) {
 		                  target.sendMessage(plugin.getMessage("HouseDeniedOWNER").replace("&admin", admin));
+		                  target.sendMessage(ChatColor.GOLD + "Läs anledningen och skriv sedan " + ChatColor.AQUA + "/klart" + ChatColor.GOLD + " vid ditt hus igen.");
 		                  return true;
 		                }
 		            } catch(Exception e) {
