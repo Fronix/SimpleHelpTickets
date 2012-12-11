@@ -86,21 +86,22 @@ public class husklart implements CommandExecutor {
                 final int id = rs.getInt("id");
                 int MaxTickets = plugin.getConfig().getInt("MaxHouseInspect");
                 
-
-                if(!ticketStatus.equalsIgnoreCase("DENIED")){
-                	
-                	if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin") && ticketStatus.equalsIgnoreCase("PENDING")) {
-                        sender.sendMessage(plugin.getMessage("HouseMaxInspect"));
-                        stmtCOUNT.close();
-                        return true;                
-                    }else{
-                    	player.sendMessage(ChatColor.RED + "Ditt hus är redan accepterat!");
-                        stmtCOUNT.close();
-                    	return true;
-                    }
-                }else{
-                    stmtCOUNT.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+ id +"'");
-                    stmtCOUNT.close();
+                if(ticketCount > 0){
+	                if(!ticketStatus.equalsIgnoreCase("DENIED")){
+	                	
+	                	if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin") && ticketStatus.equalsIgnoreCase("PENDING")) {
+	                        sender.sendMessage(plugin.getMessage("HouseMaxInspect"));
+	                        stmtCOUNT.close();
+	                        return true;                
+	                    }else{
+	                    	player.sendMessage(ChatColor.RED + "Ditt hus är redan accepterat!");
+	                        stmtCOUNT.close();
+	                    	return true;
+	                    }
+	                }else{
+	                    stmtCOUNT.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+ id +"'");
+	                    stmtCOUNT.close();
+	                }
                 }
                 
                 if(MyChunkChunk.isClaimed(chunk)){

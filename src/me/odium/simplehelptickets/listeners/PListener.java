@@ -47,7 +47,7 @@ public class PListener implements Listener {
           }
           stmt = con.createStatement();
 
-          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='OPEN' AND is_house='0'");
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='OPEN' AND admin='NONE' AND is_house='0'");
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }
@@ -59,7 +59,7 @@ public class PListener implements Listener {
             player.sendMessage(plugin.getMessage("AdminJoin").replace("&arg", ticketTotal+""));
           }
           
-          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='PENDING' OR status='DENIED' AND is_house='1'");
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE status='PENDING' AND admin='NONE' AND is_house='1'");
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             rs.next(); //sets pointer to first record in result set
           }

@@ -67,6 +67,7 @@ public class ahus implements CommandExecutor {
 		            
 		            stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='Huset är godkänt', admin='"+ admin +"', status='ACCEPTED' WHERE owner='"+ ChunkOwner +"'");
 		            player.sendMessage("Spelarens hus är nu godkänt!");
+		            player.chat("/mpromote " + ChunkOwner + " medlem");
 		            try {
 		                rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+ ChunkOwner +"'");
 		                if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
