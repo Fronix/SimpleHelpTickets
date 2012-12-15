@@ -110,7 +110,7 @@ public class taketicket implements CommandExecutor {
 		        return true;
 		      }
 		      // NOTIFY ADMIN AND USERS
-		      String admin = AssignToAdmin.getDisplayName();
+		      String admin = AssignToAdmin.getName();
 		      Player target = plugin.getServer().getPlayer(owner);
 		      
 		      // TELEPORT THE ASSIGNED ADMIN AND NOTIFY HIM
