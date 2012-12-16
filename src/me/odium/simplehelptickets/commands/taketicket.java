@@ -113,12 +113,14 @@ public class taketicket implements CommandExecutor {
 		      String admin = AssignToAdmin.getName();
 		      Player target = plugin.getServer().getPlayer(owner);
 		      
-		      // TELEPORT THE ASSIGNED ADMIN AND NOTIFY HIM
+		      /* Don't teleport when run from console. Would complicate stuff with the website.
+		       * 
 		      if (!owner.equalsIgnoreCase("CONSOLE") && AssignToAdmin != target && AssignToAdmin.isOnline()) {
 		    	  AssignToAdmin.sendMessage(plugin.getMessage("TakeTicketAssignedADMIN").replace("&arg", id));
 		    	  AssignToAdmin.sendMessage(plugin.getMessage("TakeTicketAssignedADMINTP"));
 		    	  AssignToAdmin.teleport(locc);
-		      }
+		      } */
+		      
 		      // ASSIGN ADMIN
 		      stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
 		      // NOTIFY -OTHER- ADMINS 

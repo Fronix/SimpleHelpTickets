@@ -25,6 +25,7 @@ import me.odium.simplehelptickets.commands.purgetickets;
 import me.odium.simplehelptickets.commands.replyticket;
 import me.odium.simplehelptickets.commands.sht;
 import me.odium.simplehelptickets.commands.taketicket;
+import me.odium.simplehelptickets.commands.teleport;
 import me.odium.simplehelptickets.commands.ticket;
 import me.odium.simplehelptickets.commands.tickets;
 import me.odium.simplehelptickets.listeners.PListener;
@@ -137,6 +138,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 		this.getCommand("klart").setExecutor(new husklart(this));
 		this.getCommand("housestatus").setExecutor(new housestatus(this));
 		this.getCommand("ahus").setExecutor(new ahus(this));
+		this.getCommand("tickettp").setExecutor(new teleport(this));
 		// If MySQL
 		if (this.getConfig().getBoolean("MySQL.USE_MYSQL")) {
 		  // Get Database Details
