@@ -38,18 +38,18 @@ public class teleport implements CommandExecutor {
     	sender.sendMessage("/tickettp <id>");
 		return true;
     }else if(args.length == 0 && player == null){
-    	sender.sendMessage("/tickettp <admin> <id>");
+    	sender.sendMessage("/tickettp <id> <admin>");
     	return true;
     }
     
-    for (char c : args[1].toCharArray()) {
+    for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) {
           sender.sendMessage(plugin.getMessage("InvalidTicketNumber").replace("&arg", args[0]));
           return true;
         }
       }
     
-    int ticketNumber = Integer.parseInt( args[1] );
+    int ticketNumber = Integer.parseInt( args[0] );
     String ConsoleAdmin = "";
 
     if(player == null){
@@ -58,7 +58,7 @@ public class teleport implements CommandExecutor {
     		sender.sendMessage("Usage: /tickettp <admin> <id>");
     		return true;
     	}
-        ConsoleAdmin = args[0];
+        ConsoleAdmin = args[1];
         Player AssignToAdmin = plugin.getServer().getPlayer(ConsoleAdmin);
         //Console command
     	    try {
