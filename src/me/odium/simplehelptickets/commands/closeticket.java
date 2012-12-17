@@ -40,7 +40,7 @@ public class closeticket implements CommandExecutor {
     	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-closeticket") + plugin.getOutputConfig().getString("UserCommandsMenu-closeticket")));
     	return true;
       // CLOSING TICKET
-    } else if(args.length == 1) {
+    } else if(args.length >= 1) {
       // CHECK TICKETNUMBER IS A DIGIT
       for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) {
@@ -77,7 +77,7 @@ public class closeticket implements CommandExecutor {
         if (player == null || rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {
           // SET THE ADMIN VARIABLE TO REFLECT CONSOLE/ADMIN
           if (player == null) {
-            admin = "CONSOLE";          
+            admin = args[1];          
           } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
             admin = player.getName();          
           }
@@ -123,7 +123,7 @@ public class closeticket implements CommandExecutor {
         }
       }
       // REPOENING A TICKET
-    } else if(args.length == 2 && args[0].equalsIgnoreCase("-r")) {
+    } else if(args.length >= 2 && args[0].equalsIgnoreCase("-r")) {
 
       // CHECK TICKETNUMBER IS A DIGIT
       for (char c : args[1].toCharArray()) {
@@ -161,7 +161,7 @@ public class closeticket implements CommandExecutor {
         if (player == null || player.hasPermission("sht.admin")) {
           // SET THE ADMIN VARIABLE TO RELECT CONSOLE/ADMIN
           if (player == null) {
-            admin = "CONSOLE";          
+            admin = args[2];          
           } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
             admin = player.getName();          
           }

@@ -11,6 +11,7 @@ import me.odium.simplehelptickets.SimpleHelpTickets;
 import me.odium.simplehelptickets.DBConnection;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,6 +50,8 @@ public class ticket implements CommandExecutor {
       sender.sendMessage(plugin.getMessage("HelpMe_Line1"));
       sender.sendMessage(plugin.getMessage("HelpMe_Line2"));
     } else if(args.length > 0) {
+    
+    	
       StringBuilder sb = new StringBuilder();
       for (String arg : args)
         sb.append(arg + " ");            
@@ -61,7 +64,11 @@ public class ticket implements CommandExecutor {
             sb.append(" ");
           }
           String details = sb.toString();  
-
+          if(details.startsWith("new")){
+        	  sender.sendMessage(ChatColor.GOLD + "Du behöver inte längre skriva " + ChatColor.RED + "new" + ChatColor.GOLD + " i början när du gör en ticket.");
+        	  return true;
+          }
+          
           Connection con;
           @SuppressWarnings("unused")
           java.sql.Statement stmt;
