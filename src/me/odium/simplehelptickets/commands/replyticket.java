@@ -108,6 +108,11 @@ public class replyticket implements CommandExecutor {
                 if (target != null) {
 //                  target.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.replaceColorMacros(TicketReply));
                   target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
+                  target.sendMessage(ChatColor.BLUE + "===========================");
+                  target.sendMessage(ChatColor.GOLD + admin + ":");
+                  target.sendMessage(ChatColor.WHITE + details);
+                  target.sendMessage(ChatColor.BLUE + "===========================");
+                  target.sendMessage(ChatColor.GOLD + "Använd " + ChatColor.AQUA + "/tsvara " + id + " Meddelande" + ChatColor.GOLD + " för att skriva tillbaka");
                   return true;                  
                 }
               } catch(Exception e) {
@@ -197,7 +202,11 @@ public class replyticket implements CommandExecutor {
                 Player target = Bukkit.getPlayer(rs.getString("owner"));          
                 if (target != null && target != player) {
                   target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
-                  target.sendMessage(ChatColor.GOLD + "Använd: " + plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-checkticket").replace("<#ID>", id) + ChatColor.GOLD + " för att kolla svaret"));
+                  target.sendMessage(ChatColor.BLUE + "===========================");
+                  target.sendMessage(ChatColor.GOLD + admin + ":");
+                  target.sendMessage(ChatColor.WHITE + details);
+                  target.sendMessage(ChatColor.BLUE + "===========================");
+                  target.sendMessage(ChatColor.GOLD + "Använd " + ChatColor.AQUA + "/tsvara " + id + " Meddelande" + ChatColor.GOLD + " för att skriva tillbaka");
                   return true;
                 }
               } catch(Exception e) {
