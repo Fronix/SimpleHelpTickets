@@ -201,7 +201,7 @@ public class tickets implements CommandExecutor {
             desc = desc.substring(0, 18)+"...";
           }
           if (!rs.getString("adminreply").equalsIgnoreCase("NONE")) {              
-            if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+            if (rs.getString("status").equalsIgnoreCase("CLOSED")) {
             	sender.sendMessage(plugin.getMessage("ClosedTickets"));
             	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
             } else {
@@ -209,7 +209,7 @@ public class tickets implements CommandExecutor {
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
             }
           } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
-            if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+            if (rs.getString("status").equalsIgnoreCase("CLOSED")) {
             	sender.sendMessage(plugin.getMessage("ClosedTickets"));
             	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
             } else {
@@ -217,7 +217,7 @@ public class tickets implements CommandExecutor {
             	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.GOLD+desc);
             }
           } else {
-            if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+            if (rs.getString("status").equalsIgnoreCase("CLOSED")) {
             	sender.sendMessage(plugin.getMessage("ClosedTickets"));
             	sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
             } else {

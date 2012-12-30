@@ -48,7 +48,7 @@ public class replyticket implements CommandExecutor {
       for (String arg : args)
         sb.append(arg + " ");            
           String[] temp = sb.toString().split(" ");
-          String[] temp2 = Arrays.copyOfRange(temp, 1, temp.length);
+          String[] temp2 = Arrays.copyOfRange(temp, 2, temp.length);
           sb.delete(0, sb.length());
           for (String details : temp2)
           {
@@ -69,7 +69,10 @@ public class replyticket implements CommandExecutor {
 
             if (player == null) {
               // CONSOLE COMMANDS
-              String admin = "CONSOLE";
+              String admin = args[1];
+              if(args[1] == "" || args[1].isEmpty()){
+            	  admin = "CONSOLE";
+              }
               //CHECK IF TICKET EXISTS
               rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+id+"'");
               if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
@@ -82,6 +85,7 @@ public class replyticket implements CommandExecutor {
                 stmt.close();
                 return true;
               }
+              
               stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"', admin='"+admin+"' WHERE id='"+id+"'");
 //              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.WHITE+"Replied to Ticket: "+ChatColor.GOLD+id);
               sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
