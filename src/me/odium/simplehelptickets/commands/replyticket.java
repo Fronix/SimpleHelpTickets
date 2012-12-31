@@ -86,7 +86,7 @@ public class replyticket implements CommandExecutor {
                 return true;
               }
               
-              stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"', admin='"+admin+"' WHERE id='"+id+"'");
+              stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"' WHERE id='"+id+"'");
 //              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.WHITE+"Replied to Ticket: "+ChatColor.GOLD+id);
               sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
 
@@ -184,7 +184,7 @@ public class replyticket implements CommandExecutor {
                 
               } else {
               
-              stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"', admin='"+admin+"' WHERE id='"+id+"'");
+              stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"' WHERE id='"+id+"'");
               sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
 
               try {
