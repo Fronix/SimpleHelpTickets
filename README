@@ -1,8 +1,1 @@
-This version of SimpleHelpTickets is not recommended to use on public servers before knowing what it does.
-
-I have modified SHT to fit our server (Maera.se) there for I have added more commands and removed some DB support since we only use MySQL.
-
-Requirements:
-MyChunk
-
-Thanks to Odium(https://github.com/OdiumxXx/SimpleHelpTickets) for releasing the SimpleHelpTickets source and inital creating of this plugin -All credit goes to him!
+borked
